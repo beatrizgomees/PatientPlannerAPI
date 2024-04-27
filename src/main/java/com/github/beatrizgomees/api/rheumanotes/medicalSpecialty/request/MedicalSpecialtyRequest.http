@@ -1,0 +1,25 @@
+POST http://localhost:8080/specialty
+Content-Type: application/json
+
+{
+
+  "name": "reumatologia",
+  "description": "lupus"
+
+}
+
+###
+
+GET http://localhost:8080/notes
+Content-Type: application/json
+
+
+###
+GET http://localhost:8080/notes/662cf55982682b0101adf3cc
+Content-Type: application/json
+
+
+
+###
+DELETE http://localhost:8080/notes/662cf55982682b0101adf3cc
+Content-Type: application/json

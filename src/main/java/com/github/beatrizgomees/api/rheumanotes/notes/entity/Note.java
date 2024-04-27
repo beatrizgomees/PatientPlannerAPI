@@ -1,11 +1,9 @@
 package com.github.beatrizgomees.api.rheumanotes.notes.entity;
 
+import com.github.beatrizgomees.api.rheumanotes.doctor.entity.Doctor;
 import io.quarkus.mongodb.panache.PanacheMongoEntity;
 import io.quarkus.mongodb.panache.common.MongoEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.lang.annotation.Documented;
 import java.time.LocalDateTime;
@@ -23,7 +21,9 @@ public class Note{
 
     private String description;
 
-    private String doctor;
+    @ManyToOne
+    @JoinColumn(name = "doctor_id")
+    private Doctor doctor;
 
     private LocalDateTime dateConsult;
 
@@ -49,11 +49,11 @@ public class Note{
         this.description = description;
     }
 
-    public String getDoctor() {
+    public Doctor getDoctor() {
         return doctor;
     }
 
-    public void setDoctor(String doctor) {
+    public void setDoctor(Doctor doctor) {
         this.doctor = doctor;
     }
 

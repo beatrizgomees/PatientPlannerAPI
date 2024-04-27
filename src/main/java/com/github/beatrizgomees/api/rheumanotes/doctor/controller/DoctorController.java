@@ -1,8 +1,8 @@
-package com.github.beatrizgomees.api.rheumanotes.notes.controller;
+package com.github.beatrizgomees.api.rheumanotes.doctor.controller;
 
-import com.github.beatrizgomees.api.rheumanotes.notes.service.NoteServiceImpl;
-import com.github.beatrizgomees.api.rheumanotes.notes.dto.NoteRequest;
 import com.github.beatrizgomees.api.rheumanotes.core.exceptions.FindByIdException;
+import com.github.beatrizgomees.api.rheumanotes.doctor.dto.DoctorRequest;
+import com.github.beatrizgomees.api.rheumanotes.doctor.service.DoctorServiceImpl;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -12,30 +12,29 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import java.util.List;
 
-
-@Path("/notes")
-@Tag(name = "notes")
+@Path("/doctor")
+@Tag(name = "doctor")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class NoteController {
-
+public class DoctorController {
     @Inject
-    NoteServiceImpl noteServiceImpl;
+    DoctorServiceImpl doctorServiceImpl;
 
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createNote(NoteRequest notesDTO){
-        NoteRequest noteRequest = noteServiceImpl.create(notesDTO);
-        return Response.ok(noteRequest).status(201).build();
+    public Response createDoctor(DoctorRequest doctorRequest){
+        DoctorRequest doctor = doctorServiceImpl.create(doctorRequest);
+        return Response.ok(doctor).status(201).build();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getNotes(){
-        List<Document> documentList = noteServiceImpl.getAll();
+        List<Document> documentList = doctorServiceImpl.getAll();
         return Response.ok(documentList).status(200).build();
     }
+
 
     @GET
     @Path("/{id}")
@@ -44,9 +43,9 @@ public class NoteController {
     public Response findNoteById(@PathParam("id") String id)  throws FindByIdException {
         Document document;
         try {
-          document = noteServiceImpl.findById(id);
+            document = doctorServiceImpl.findById(id);
         } catch (FindByIdException e) {
-            return Response.status(Response.Status.NOT_FOUND).entity("Note not found").build();
+            return Response.status(Response.Status.NOT_FOUND).entity("Doctor not found").build();
         } catch (Exception e) {
             e.printStackTrace();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Internal server error").build();
@@ -60,17 +59,17 @@ public class NoteController {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response deleteOneNote(@PathParam("id") String id){
-        noteServiceImpl.delete(id);
+        doctorServiceImpl.delete(id);
         return Response.ok().status(200).build();
     }
-
 
     @PUT
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateNote(@PathParam("id") String id, Document document) throws FindByIdException {
-        noteServiceImpl.update(id, document);
+        doctorServiceImpl.update(id, document);
         return Response.ok(document).status(200).build();
     }
+
 }

@@ -1,21 +1,16 @@
-POST http://localhost:8080/notes
+POST http://localhost:8080/doctor
 Content-Type: application/json
 
 {
-  "title": "ddhdfhdfh Doe",
-  "description": "Marie.doe@example.com",
-  "doctor": {
-    "name": "henrique",
-    "lastname": "ferreira",
+
+    "name": "luciana",
+    "lastname": "gomes",
     "medicalSpecialty": {
-      "name": "reumatologia",
-      "description": "teste"
+      "name": "teste",
+      "description": "lupus"
     },
-    "description": "medico reumatologista hc",
+    "description": "medico gastro hc",
     "phoneNumber": "81865845385"
-  },
-  "dateConsult": "2024-04-19T00:00:00Z",
-  "createdAt": "2024-04-19T00:00:00Z"
 }
 
 ###
