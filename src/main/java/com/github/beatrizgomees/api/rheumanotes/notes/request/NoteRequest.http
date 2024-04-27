@@ -1,0 +1,26 @@
+POST http://localhost:8080/notes
+Content-Type: application/json
+
+{
+  "title": "Marie Doe",
+  "description": "Marie.doe@example.com",
+  "doctor": "henrique",
+  "dateConsult": "2024-04-19T00:00:00Z",
+  "createdAt": "2024-04-19T00:00:00Z"
+}
+
+###
+
+GET http://localhost:8080/notes
+Content-Type: application/json
+
+
+###
+GET http://localhost:8080/notes/662cf55982682b0101adf3cc
+Content-Type: application/json
+
+
+
+###
+DELETE http://localhost:8080/notes/662cf55982682b0101adf3cc
+Content-Type: application/json
