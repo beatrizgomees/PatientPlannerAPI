@@ -24,8 +24,8 @@ public class MedicalSpecialtyController {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response createDoctor(MedicalSpecialtyRequest medicalSpecialtyRequest){
-        MedicalSpecialtyRequest request = medicalSpecialtyService.create(medicalSpecialtyRequest);
-        return Response.ok(request).status(201).build();
+        medicalSpecialtyService.create(medicalSpecialtyRequest);
+        return Response.ok(medicalSpecialtyRequest).status(201).build();
     }
 
     @GET
@@ -42,14 +42,7 @@ public class MedicalSpecialtyController {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response findNoteById(@PathParam("id") String id)  throws FindByIdException {
         Document document;
-        try {
-            document = medicalSpecialtyService.findById(id);
-        } catch (FindByIdException e) {
-            return Response.status(Response.Status.NOT_FOUND).entity("Doctor not found").build();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Internal server error").build();
-        }
+        document = medicalSpecialtyService.findById(id);
         return Response.ok(document).status(200).build();
 
     }
@@ -71,4 +64,7 @@ public class MedicalSpecialtyController {
         medicalSpecialtyService.update(id, document);
         return Response.ok(document).status(200).build();
     }
+
+
+
 }

@@ -5,12 +5,16 @@ import com.github.beatrizgomees.api.rheumaPlanner.core.exceptions.FindByIdExcept
 import com.github.beatrizgomees.api.rheumaPlanner.core.exceptions.GetException;
 import com.github.beatrizgomees.api.rheumaPlanner.notes.dto.NoteRequest;
 import com.github.beatrizgomees.api.rheumaPlanner.core.data.DataManager;
+import com.github.beatrizgomees.api.rheumaPlanner.notes.entity.Note;
+import com.github.beatrizgomees.api.rheumaPlanner.notes.mapper.NoteMapper;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCursor;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.bson.Document;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,12 +29,18 @@ public class NoteServiceImpl implements CrudService<NoteRequest, Document> {
     public NoteRequest create(NoteRequest request) {
     if(existsDoctorByName(request) && existsMedicalSpecialtyByName(request)) {
 
+        NoteMapper noteMapper = new NoteMapper();
+        Note note = noteMapper.toEntity(request);
+
+        String dateConsultFormat = formatLocalDateTime(note.getDateConsult());
+        String createAtFormat = formatLocalDateTime(note.getCreatedAt());
+
         Document document = new Document()
-                .append("title", request.title())
-                .append("description", request.description())
-                .append("doctor", request.doctor())
-                .append("dateConsult", request.dateConsult())
-                .append("createdAt", request.createdAt());
+                .append("title", note.getTitle())
+                .append("description", note.getDescription())
+                .append("doctor", note.getDoctor())
+                .append("dateConsult", dateConsultFormat)
+                .append("createdAt",createAtFormat);
         dataManager.create(document, "notes");
         return request;
     }else{
@@ -92,10 +102,8 @@ public class NoteServiceImpl implements CrudService<NoteRequest, Document> {
             Document update = new Document("$set", updateDocument);
             dataManager.updateGenereal(id, update, "notes");
             return document;
+
         } catch (FindByIdException e) {
-            throw e;
-        } catch (Exception e) {
-            e.printStackTrace();
             throw new FindByIdException("Error finding note by ID", e);
         }
     }
@@ -117,6 +125,14 @@ public class NoteServiceImpl implements CrudService<NoteRequest, Document> {
         }else{
             return true;
         }
+    }
+
+    public String formatLocalDateTime(LocalDateTime localDateTime){
+        DateTimeFormatter formatData = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String dataFormatada = localDateTime.format(formatData);
+        System.out.println("Data formatada: " + dataFormatada);
+
+        return dataFormatada;
     }
 
 

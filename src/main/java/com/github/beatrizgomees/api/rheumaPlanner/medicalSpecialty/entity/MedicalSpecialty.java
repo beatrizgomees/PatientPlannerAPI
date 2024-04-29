@@ -1,5 +1,6 @@
 package com.github.beatrizgomees.api.rheumaPlanner.medicalSpecialty.entity;
 
+import io.quarkus.mongodb.panache.common.MongoEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -7,7 +8,7 @@ import jakarta.persistence.Id;
 
 import java.util.UUID;
 
-@Entity
+@MongoEntity(collection = "medicalSpecialty")
 public class MedicalSpecialty {
 
     @Id

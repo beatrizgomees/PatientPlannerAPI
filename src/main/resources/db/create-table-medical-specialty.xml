@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.26.xsd">
+
+
+    <changeSet id="1714401614999-1" author="beatriz">
+            <customChange class="com.github.beatrizgomees.api.rheumaPlanner.medicalSpecialty.entity.MedicalSpecialty">
+                <param name="MEDICALSPECIALTY" value="medicalSpecialty"/>
+                <param name="id" value="uuid"/>
+                <param name="name" value="String"/>
+                <param name="description" value="String"/>
+            </customChange>
+    </changeSet>
+</databaseChangeLog>

@@ -5,6 +5,8 @@ import com.github.beatrizgomees.api.rheumaPlanner.core.interfaces.CrudService;
 import com.github.beatrizgomees.api.rheumaPlanner.doctor.dto.DoctorRequest;
 import com.github.beatrizgomees.api.rheumaPlanner.core.exceptions.FindByIdException;
 import com.github.beatrizgomees.api.rheumaPlanner.core.exceptions.GetException;
+import com.github.beatrizgomees.api.rheumaPlanner.doctor.entity.Doctor;
+import com.github.beatrizgomees.api.rheumaPlanner.doctor.mapper.DoctorMapper;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCursor;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -24,12 +26,14 @@ public class DoctorServiceImpl implements CrudService<DoctorRequest, Document> {
     public DoctorRequest create(DoctorRequest request) {
         if (existsMedicalSpecialtyByName(request)) {
             if (!existsDoctorByName(request)) {
+                DoctorMapper doctorMapper = new DoctorMapper();
+                Doctor doctor = doctorMapper.toEntity(request);
                 Document document = new Document()
-                        .append("name", request.name())
-                        .append("description", request.description())
-                        .append("lastname", request.lastname())
-                        .append("medicalSpecialty", request.medicalSpecialty())
-                        .append("PhoneNumber", request.phoneNumber());
+                        .append("name", doctor.getName())
+                        .append("description", doctor.getDescription())
+                        .append("lastname", doctor.getLastname())
+                        .append("medicalSpecialty", doctor.getMedicalSpecialty())
+                        .append("PhoneNumber", doctor.getPhoneNumber());
                 dataManager.create(document, "doctor");
                 return request;
 
@@ -93,10 +97,7 @@ public class DoctorServiceImpl implements CrudService<DoctorRequest, Document> {
             dataManager.updateGenereal(id, update, "doctor");
             return document;
         } catch (FindByIdException e) {
-            throw e;
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new FindByIdException("Error finding Doctor by ID", e);
+            throw new FindByIdException("Error finding note by ID", e);
         }
     }
 

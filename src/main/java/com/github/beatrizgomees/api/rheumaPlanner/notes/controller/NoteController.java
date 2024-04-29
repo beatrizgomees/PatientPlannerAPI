@@ -8,13 +8,14 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.bson.Document;
+import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import java.util.List;
 
 
-@Path("/notes")
-@Tag(name = "notes")
+@Path("/notes" )
+@Tag(name = "notes", description = "teste")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class NoteController {
@@ -24,13 +25,15 @@ public class NoteController {
 
 
     @POST
+    @Operation(summary = "register new notes in the database")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createNote(NoteRequest notesDTO){
-        NoteRequest noteRequest = noteServiceImpl.create(notesDTO);
+    public Response createNote(NoteRequest noteRequest){
+        noteServiceImpl.create(noteRequest);
         return Response.ok(noteRequest).status(201).build();
     }
 
     @GET
+    @Operation(summary = "Search all banknotes registered in the bank")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getNotes(){
         List<Document> documentList = noteServiceImpl.getAll();
@@ -39,24 +42,19 @@ public class NoteController {
 
     @GET
     @Path("/{id}")
+    @Operation(summary = "Search for notes registered at the bank by ID")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response findNoteById(@PathParam("id") String id)  throws FindByIdException {
         Document document;
-        try {
-          document = noteServiceImpl.findById(id);
-        } catch (FindByIdException e) {
-            return Response.status(Response.Status.NOT_FOUND).entity("Note not found").build();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Internal server error").build();
-        }
+        document = noteServiceImpl.findById(id);
         return Response.ok(document).status(200).build();
 
     }
 
     @DELETE
     @Path("/{id}")
+    @Operation(summary = "delete notes by id")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response deleteOneNote(@PathParam("id") String id){
@@ -67,6 +65,7 @@ public class NoteController {
 
     @PUT
     @Path("/{id}")
+    @Operation(summary = "updates notes already registered in the bank")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateNote(@PathParam("id") String id, Document document) throws FindByIdException {

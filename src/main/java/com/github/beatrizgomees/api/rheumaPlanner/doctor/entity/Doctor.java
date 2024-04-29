@@ -1,11 +1,12 @@
 package com.github.beatrizgomees.api.rheumaPlanner.doctor.entity;
 
 import com.github.beatrizgomees.api.rheumaPlanner.medicalSpecialty.entity.MedicalSpecialty;
+import io.quarkus.mongodb.panache.common.MongoEntity;
 import jakarta.persistence.*;
 
 import java.util.UUID;
 
-@Entity
+@MongoEntity(collection = "doctor")
 public class Doctor {
 
     @Id
