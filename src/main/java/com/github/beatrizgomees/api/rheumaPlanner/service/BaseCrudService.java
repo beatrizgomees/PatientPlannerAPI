@@ -2,7 +2,6 @@ package com.github.beatrizgomees.api.rheumaPlanner.service;
 
 import com.github.beatrizgomees.api.rheumaPlanner.domain.CrudService;
 import com.github.beatrizgomees.api.rheumaPlanner.domain.exceptions.FindByIdException;
-import com.github.beatrizgomees.api.rheumaPlanner.domain.medicalSpecialty.MedicalSpecialty;
 import com.github.beatrizgomees.api.rheumaPlanner.infrastructure.data.DataManager;
 import jakarta.inject.Inject;
 import org.bson.Document;
@@ -16,49 +15,34 @@ public class BaseCrudService<T, R> implements CrudService<T, R> {
     @Inject
     DataManager dataManager;
 
-    public BaseCrudService(DataManager dataManager) {
-        this.dataManager = dataManager;
-    }
 
     public BaseCrudService() {
     }
 
+    protected <T> Document createDocument(T request, String[] fieldNames) {
+        try {
+            Document document = new Document();
+            Class<?> clazz = request.getClass();
 
-    public R createDocument(T request, String[] fieldNames) throws IllegalAccessException {
-        Document document = new Document();
-
-        // Obter a classe do objeto de solicitação
-        Class<?> clazz = request.getClass();
-
-        // Iterar sobre os nomes dos campos fornecidos
-        for (String fieldName : fieldNames) {
-            try {
-                // Obter o campo da classe
+            for (String fieldName : fieldNames) {
                 Field field = clazz.getDeclaredField(fieldName);
-
-                // Tornar o campo acessível (se necessário)
                 field.setAccessible(true);
-
-                // Obter o valor do campo do objeto de solicitação
                 Object value = field.get(request);
-
-                // Adicionar o campo e seu valor ao documento MongoDB
                 document.append(fieldName, value);
-            } catch (NoSuchFieldException e) {
-                // Lidar com o caso em que o campo não é encontrado
-                // Aqui você pode lançar uma exceção, registrar o erro ou lidar de outra forma
-                // Exemplo: throw new IllegalArgumentException("Campo não encontrado: " + fieldName, e);
             }
-        }
 
-        // Retorna o documento criado
-        return (R) document;
+            return document;
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace(); // Ou lance uma exceção adequada
+            return null;
+        }
     }
 
 
+
     @Override
-    public T create(T request) throws IllegalAccessException {
-        Document document = (Document) createDocument(request, getFieldNames(getClass()));
+    public T create(T request) {
+        Document document = createDocument(request, getFieldNames(request.getClass()));
         if (document != null) {
             dataManager.create(document, getCollectionName());
             return request;
@@ -66,6 +50,7 @@ public class BaseCrudService<T, R> implements CrudService<T, R> {
             throw new IllegalStateException("Falha ao criar documento.");
         }
     }
+
 
     @Override
     public List<R> getAll() {

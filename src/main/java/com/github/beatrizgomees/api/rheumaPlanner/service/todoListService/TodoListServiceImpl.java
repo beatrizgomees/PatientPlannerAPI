@@ -25,25 +25,15 @@ public class TodoListServiceImpl extends BaseCrudService<TodoListRequest, Docume
 
 
 
-    public TodoListServiceImpl(DataManager dataManager) {
-        super(dataManager);
-    }
-
     public TodoListServiceImpl(){
 
     }
 
-    String[] fieldNames = getFieldNames(TodoListServiceImpl.class);
 
     @Override
     public String getCollectionName() {
         return "todoList";
     }
 
-    @Override
-    public TodoListRequest create(TodoListRequest request) {
-        TodoListMapper todoListMapper = new TodoListMapper();
-        TodoList todoList = todoListMapper.toEntity(request);
-        return request;
-    }
+
 }

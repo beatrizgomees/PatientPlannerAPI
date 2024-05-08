@@ -22,12 +22,8 @@ import java.util.List;
 public class MedicalSpecialtyServiceImpl extends BaseCrudService<MedicalSpecialtyRequest, Document> {
 
 
-    public MedicalSpecialtyServiceImpl(DataManager dataManager) {
-        super(dataManager);
-    }
     public MedicalSpecialtyServiceImpl() {
     }
-    String[] fieldNames = getFieldNames(MedicalSpecialty.class);
 
 
     @Override
@@ -35,17 +31,7 @@ public class MedicalSpecialtyServiceImpl extends BaseCrudService<MedicalSpecialt
         return "medicalSpecialty";
     }
 
-    @Override
-    public MedicalSpecialtyRequest create(MedicalSpecialtyRequest request) {
-        if (!existByName(request)) {
-            MedicalSpecialtyMapper medicalSpecialtyMapper = new MedicalSpecialtyMapper();
-            MedicalSpecialty medicalSpecialty = medicalSpecialtyMapper.toEntity(request);
-            return request;
 
-        } else {
-            throw new IllegalStateException("Especialidade Médica já está cadastrado.");
-        }
-    }
 
 
 

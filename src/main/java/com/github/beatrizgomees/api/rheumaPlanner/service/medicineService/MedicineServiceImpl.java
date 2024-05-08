@@ -26,30 +26,17 @@ import java.util.List;
 public class MedicineServiceImpl extends BaseCrudService<MedicineRequest, Document> {
 
 
-    public MedicineServiceImpl(DataManager dataManager) {
-        super(dataManager);
-    }
 
     public MedicineServiceImpl(){
 
     }
 
 
-    String[] fieldNames = getFieldNames(Medicine.class);
 
     @Override
     public String getCollectionName() {
         return "medicine";
     }
 
-    @Override
-    public MedicineRequest create(MedicineRequest request) {
-        if (!existByName(request)) {
-            MedicineMapper medicineMapper = new MedicineMapper();
-            Medicine medicine = medicineMapper.toEntity(request);
-            return request;
-        } else {
-            throw new IllegalStateException("Medicamento já está cadastrado.");
-        }
-    }
+
 }
