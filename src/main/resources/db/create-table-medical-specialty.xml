@@ -7,7 +7,7 @@
 
 
     <changeSet id="1714401614999-1" author="beatriz">
-            <customChange class="com.github.beatrizgomees.api.rheumaPlanner.medicalSpecialty.entity.MedicalSpecialty">
+            <customChange class="com.github.beatrizgomees.api.rheumaPlanner.domain.medicalSpecialty.MedicalSpecialty">
                 <param name="MEDICALSPECIALTY" value="medicalSpecialty"/>
                 <param name="id" value="uuid"/>
                 <param name="name" value="String"/>

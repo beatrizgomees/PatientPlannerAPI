@@ -1,0 +1,30 @@
+POST http://localhost:8081/doctor
+Content-Type: application/json
+
+{
+
+    "name": "luciana",
+    "lastname": "gomes",
+    "medicalSpecialty": {
+      "name": "reumatologia",
+      "description": "lupus"
+    },
+    "description": "medico gastro hc",
+    "phoneNumber": "81865845385"
+}
+
+###
+
+GET http://localhost:8081/doctor
+Content-Type: application/json
+
+
+###
+GET http://localhost:8081/doctor/662cf55982682b0101adf3cc
+Content-Type: application/json
+
+
+
+###
+DELETE http://localhost:8081/doctor/662cf55982682b0101adf3cc
+Content-Type: application/json

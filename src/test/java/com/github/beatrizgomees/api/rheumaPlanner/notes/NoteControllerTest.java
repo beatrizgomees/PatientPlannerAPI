@@ -1,6 +1,6 @@
 package com.github.beatrizgomees.api.rheumaPlanner.notes;
 
-import com.github.beatrizgomees.api.rheumaPlanner.notes.dto.NoteRequest;
+import com.github.beatrizgomees.api.rheumaPlanner.domain.note.NoteRequest;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
 
