@@ -21,7 +21,7 @@ public class MedicalSpecialtyServiceImpl implements CrudService<MedicalSpecialty
     DataManager dataManager;
     @Override
     public MedicalSpecialtyRequest create(MedicalSpecialtyRequest request) {
-        if(!existsMedicalSpecialtyByName(request)) {
+        if(existsMedicalSpecialtyByName(request)) {
             MedicalSpecialtyMapper medicalSpecialtyMapper = new MedicalSpecialtyMapper();
             MedicalSpecialty medicalSpecialty = medicalSpecialtyMapper.toEntity(request);
             Document document = new Document()
@@ -95,9 +95,9 @@ public class MedicalSpecialtyServiceImpl implements CrudService<MedicalSpecialty
     public boolean existsMedicalSpecialtyByName(MedicalSpecialtyRequest request) {
         Document existingSpecialty = dataManager.findByNameGeneral(String.valueOf(request.name()), "medicalSpecialty");
         if (existingSpecialty == null || existingSpecialty.isEmpty()) {
-            throw new IllegalStateException("Nao existe uma especialidade com esse nome.");
-        }else{
             return true;
+        }else{
+            throw new IllegalStateException("Nao existe uma especialidade com esse nome.");
         }
     }
 }
