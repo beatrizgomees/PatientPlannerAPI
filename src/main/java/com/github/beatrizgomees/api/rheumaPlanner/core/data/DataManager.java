@@ -51,7 +51,7 @@ public class DataManager implements PanacheMongoRepository {
 
 
     private MongoCollection<Document> getCollection(String collectionName) {
-        return mongoClient.getDatabase("rheumaplanner").getCollection(collectionName);
+        return mongoClient.getDatabase("planner").getCollection(collectionName);
     }
 }
 

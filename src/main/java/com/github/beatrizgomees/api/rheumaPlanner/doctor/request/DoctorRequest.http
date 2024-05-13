@@ -1,12 +1,12 @@
-POST http://localhost:8080/doctor
+POST http://localhost:8081/doctor
 Content-Type: application/json
 
 {
 
-    "name": "luciana",
+    "name": "henrique",
     "lastname": "gomes",
     "medicalSpecialty": {
-      "name": "teste",
+      "name": "les",
       "description": "lupus"
     },
     "description": "medico gastro hc",
