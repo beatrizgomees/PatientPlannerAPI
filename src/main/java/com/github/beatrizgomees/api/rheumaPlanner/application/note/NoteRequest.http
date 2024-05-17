@@ -6,7 +6,7 @@ Content-Type: application/json
   "description": "Marie.doe@example.com",
   "doctor": {
     "name": "henrique",
-    "lastname": "ferreira",
+    "lastname": "gomes",
     "medicalSpecialty": {
       "name": "reumatologia",
       "description": "teste"
