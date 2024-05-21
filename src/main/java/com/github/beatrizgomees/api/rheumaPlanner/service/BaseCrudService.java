@@ -3,6 +3,7 @@ package com.github.beatrizgomees.api.rheumaPlanner.service;
 import com.github.beatrizgomees.api.rheumaPlanner.domain.CrudService;
 import com.github.beatrizgomees.api.rheumaPlanner.domain.exceptions.FindByIdException;
 import com.github.beatrizgomees.api.rheumaPlanner.infrastructure.data.DataManager;
+import com.mongodb.client.FindIterable;
 import jakarta.inject.Inject;
 import org.bson.Document;
 
@@ -56,17 +57,17 @@ public class BaseCrudService<T, R> implements CrudService<T, R> {
 
     @Override
     public List<R> getAll() {
-      return (List<R>) dataManager.getAll(collectionName);
+      return (List<R>) dataManager.getAll(getCollectionName());
     }
 
     @Override
-    public R findById(String id) throws FindByIdException {
-        return null;
+    public R findById(String id){
+        return (R) dataManager.findByIdGeneral(id, getCollectionName());
     }
 
     @Override
     public void delete(String id) {
-        dataManager.delete(id, collectionName);
+        dataManager.delete(id, getCollectionName());
     }
 
     @Override

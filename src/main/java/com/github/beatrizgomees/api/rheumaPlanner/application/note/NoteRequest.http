@@ -2,7 +2,7 @@ POST http://localhost:8081/notes
 Content-Type: application/json
 
 {
-  "title": "ddhdfhdfh Doe",
+  "title": "dadasdasdsaasdas Doe",
   "description": "Marie.doe@example.com",
   "doctor": {
     "name": "henrique",
@@ -20,12 +20,12 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:8080/notes
+GET http://localhost:8081/notes
 Content-Type: application/json
 
 
 ###
-GET http://localhost:8080/notes/662cf55982682b0101adf3cc
+GET http://localhost:8081/notes/664d22e6e8a94944f38cebc0
 Content-Type: application/json
 
 

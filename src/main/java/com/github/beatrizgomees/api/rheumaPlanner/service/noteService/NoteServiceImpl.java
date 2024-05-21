@@ -13,10 +13,6 @@ public class NoteServiceImpl extends BaseCrudService<NoteRequest, Document> {
 
     }
 
-    @Override
-    public void setCollectionName(String collectionName) {
-        super.setCollectionName("notes");
-    }
 
     @Override
     public String getCollectionName() {

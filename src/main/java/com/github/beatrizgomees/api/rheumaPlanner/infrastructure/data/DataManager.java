@@ -3,6 +3,7 @@ package com.github.beatrizgomees.api.rheumaPlanner.infrastructure.data;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.FindOneAndUpdateOptions;
 import com.mongodb.client.model.ReturnDocument;
 import com.mongodb.client.result.InsertOneResult;
@@ -10,6 +11,10 @@ import io.quarkus.mongodb.panache.PanacheMongoRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.bson.Document;
 import org.bson.types.ObjectId;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.mongodb.client.model.Filters.eq;
 
 
@@ -25,8 +30,16 @@ public class DataManager implements PanacheMongoRepository {
         return getCollection(collectionName).insertOne(document);
     }
 
-    public FindIterable<Document> getAll(String collectionName) {
-        FindIterable<Document> documents = getCollection(collectionName).find();
+    public List<Document> getAll(String collectionName) {
+        FindIterable<Document> iterable = getCollection(collectionName).find();
+        List<Document> documents = new ArrayList<>();
+
+        try (MongoCursor<Document> cursor = iterable.iterator()) {
+            while (cursor.hasNext()) {
+                documents.add(cursor.next());
+            }
+        }
+
         return documents;
     }
 

@@ -26,5 +26,5 @@ Content-Type: application/json
 
 
 ###
-DELETE http://localhost:8081/doctor/662cf55982682b0101adf3cc
+DELETE http://localhost:8081/doctor/664cdbe54a763b447b967399
 Content-Type: application/json
