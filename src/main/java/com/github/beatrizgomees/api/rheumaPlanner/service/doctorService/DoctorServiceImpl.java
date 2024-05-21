@@ -14,8 +14,8 @@ import org.bson.Document;
 public class DoctorServiceImpl extends BaseCrudService<DoctorRequest, Document> {
 
 
-    public DoctorServiceImpl() {}
-
+    public DoctorServiceImpl() {
+    }
 
     @Override
     public String getCollectionName() {
@@ -26,4 +26,6 @@ public class DoctorServiceImpl extends BaseCrudService<DoctorRequest, Document> 
     protected String[] getFieldNames(Class<?> clazz) {
         return new String[] { "name", "lastname", "description", "medicalSpecialty", "phoneNumber" };
     }
+
+
 }

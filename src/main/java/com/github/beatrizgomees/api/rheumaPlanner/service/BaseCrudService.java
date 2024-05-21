@@ -14,9 +14,10 @@ public class BaseCrudService<T, R> implements CrudService<T, R> {
 
     @Inject
     DataManager dataManager;
-
+    private String collectionName;
 
     public BaseCrudService() {
+
     }
 
     protected <T> Document createDocument(T request, String[] fieldNames) {
@@ -44,6 +45,7 @@ public class BaseCrudService<T, R> implements CrudService<T, R> {
     public T create(T request) {
         Document document = createDocument(request, getFieldNames(request.getClass()));
         if (document != null) {
+            System.out.println(getCollectionName());
             dataManager.create(document, getCollectionName());
             return request;
         } else {
@@ -54,7 +56,7 @@ public class BaseCrudService<T, R> implements CrudService<T, R> {
 
     @Override
     public List<R> getAll() {
-        return null;
+      return (List<R>) dataManager.getAll(collectionName);
     }
 
     @Override
@@ -64,12 +66,13 @@ public class BaseCrudService<T, R> implements CrudService<T, R> {
 
     @Override
     public void delete(String id) {
-
+        dataManager.delete(id, collectionName);
     }
 
     @Override
-    public R update(String id, R updateDocument) throws FindByIdException {
-        return null;
+    public R update(String id, R updateDocument) {
+       dataManager.update(id, updateDocument);
+       return updateDocument;
     }
 
     @Override
@@ -94,7 +97,12 @@ public class BaseCrudService<T, R> implements CrudService<T, R> {
 
 
     public String getCollectionName() {
-        return null;
+        return this.collectionName;
+    }
+
+
+    public void setCollectionName(String collectionName) {
+        this.collectionName = collectionName;
     }
 
 

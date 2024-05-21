@@ -24,11 +24,9 @@ import java.util.List;
 public class TodoListServiceImpl extends BaseCrudService<TodoListRequest, Document> {
 
 
-
-    public TodoListServiceImpl(){
+    public TodoListServiceImpl() {
 
     }
-
 
     @Override
     public String getCollectionName() {

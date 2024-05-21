@@ -25,8 +25,8 @@ public class DataManager implements PanacheMongoRepository {
         return getCollection(collectionName).insertOne(document);
     }
 
-    public FindIterable<Document> getAll(FindIterable<Document> documents, String collectionName) {
-         documents = getCollection(collectionName).find();
+    public FindIterable<Document> getAll(String collectionName) {
+        FindIterable<Document> documents = getCollection(collectionName).find();
         return documents;
     }
 

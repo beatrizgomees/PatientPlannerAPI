@@ -26,12 +26,9 @@ import java.util.List;
 public class MedicineServiceImpl extends BaseCrudService<MedicineRequest, Document> {
 
 
-
-    public MedicineServiceImpl(){
+    public MedicineServiceImpl() {
 
     }
-
-
 
     @Override
     public String getCollectionName() {

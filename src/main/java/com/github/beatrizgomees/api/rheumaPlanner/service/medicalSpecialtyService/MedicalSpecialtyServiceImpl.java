@@ -10,8 +10,8 @@ public class MedicalSpecialtyServiceImpl extends BaseCrudService<MedicalSpecialt
 
 
     public MedicalSpecialtyServiceImpl() {
-    }
 
+    }
 
     @Override
     public String getCollectionName() {

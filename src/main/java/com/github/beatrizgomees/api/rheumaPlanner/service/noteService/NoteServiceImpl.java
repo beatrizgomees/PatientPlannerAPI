@@ -1,8 +1,6 @@
 package com.github.beatrizgomees.api.rheumaPlanner.service.noteService;
 
 import com.github.beatrizgomees.api.rheumaPlanner.domain.note.NoteRequest;
-import com.github.beatrizgomees.api.rheumaPlanner.infrastructure.data.DataManager;
-import com.github.beatrizgomees.api.rheumaPlanner.domain.note.Note;
 import com.github.beatrizgomees.api.rheumaPlanner.service.BaseCrudService;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.bson.Document;
@@ -11,12 +9,14 @@ import org.bson.Document;
 public class NoteServiceImpl extends BaseCrudService<NoteRequest, Document> {
 
 
-
-    public NoteServiceImpl(){
+    public NoteServiceImpl() {
 
     }
 
-
+    @Override
+    public void setCollectionName(String collectionName) {
+        super.setCollectionName("notes");
+    }
 
     @Override
     public String getCollectionName() {
