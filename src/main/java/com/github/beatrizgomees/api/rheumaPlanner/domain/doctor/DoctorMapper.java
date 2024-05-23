@@ -1,27 +1,62 @@
 package com.github.beatrizgomees.api.rheumaPlanner.domain.doctor;
 
-import com.github.beatrizgomees.api.rheumaPlanner.domain.doctor.DoctorRequest;
-import com.github.beatrizgomees.api.rheumaPlanner.domain.doctor.Doctor;
 import org.bson.Document;
 
 public class DoctorMapper {
 
-    public Doctor toEntity(DoctorRequest doctorRequest){
+    public Doctor convertDtoToEntity(DoctorDTO doctorDTO){
+        if (doctorDTO == null) {
+            return null;
+        }
         Doctor doctor = new Doctor();
-        doctor.setName(doctorRequest.name());
-        doctor.setDescription(doctorRequest.description());
-        doctor.setLastname(doctorRequest.lastname());
-        doctor.setMedicalSpecialty(doctorRequest.medicalSpecialty());
-        doctor.setPhoneNumber(doctorRequest.phoneNumber());
+        doctor.setFirstname(doctorDTO.firstName());
+        doctor.setDescription(doctorDTO.description());
+        doctor.setLastName(doctorDTO.lastName());
+        doctor.setMedicalSpecialty(doctorDTO.medicalSpecialty());
+        doctor.setPhoneNumber(doctorDTO.phoneNumber());
         return doctor;
     }
 
-    public Document toDocument(DoctorRequest doctorRequest) {
+    public Document convertDtoToDocument(DoctorDTO doctorDTO) {
+        if (doctorDTO == null) {
+            return null;
+        }
+
         return new Document()
-                .append("name", doctorRequest.name())
-                .append("description", doctorRequest.description())
-                .append("lastName", doctorRequest.lastname())
-                .append("medicalSpecialty", doctorRequest.medicalSpecialty())
-                .append("phoneNumber", doctorRequest.phoneNumber());
+                .append("name", doctorDTO.firstName())
+                .append("description", doctorDTO.description())
+                .append("lastName", doctorDTO.lastName())
+                .append("medicalSpecialty", doctorDTO.medicalSpecialty())
+                .append("phoneNumber", doctorDTO.phoneNumber());
+    }
+
+
+    public DoctorDTO convertRequestToDTO(DoctorRequest doctorRequest) {
+        if (doctorRequest == null) {
+            return null;
+        }
+        return new DoctorDTO(
+                doctorRequest.id(),
+                doctorRequest.firstName(),
+                doctorRequest.lastname(),
+                doctorRequest.medicalSpecialty(),
+                doctorRequest.description(),
+                doctorRequest.phoneNumber()
+        );
+    }
+    public DoctorResponse convertEntityToResponse(Doctor doctor) {
+        if (doctor == null) {
+            return null;
+        }
+        return new DoctorResponse(
+
+                doctor.getId(),
+                doctor.getFirstname(),
+                doctor.getLastName(),
+                doctor.getDescription(),
+                doctor.getMedicalSpecialty(),
+                doctor.getPhoneNumber()
+        );
+
     }
 }

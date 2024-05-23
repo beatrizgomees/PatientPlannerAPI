@@ -3,6 +3,7 @@ package com.github.beatrizgomees.api.rheumaPlanner.domain.doctor;
 import com.github.beatrizgomees.api.rheumaPlanner.domain.medicalSpecialty.MedicalSpecialty;
 import io.quarkus.mongodb.panache.common.MongoEntity;
 import jakarta.persistence.*;
+import org.hibernate.annotations.BatchSize;
 
 import java.util.UUID;
 
@@ -13,8 +14,8 @@ public class Doctor {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    private String name;
-    private String lastname;
+    private String firstName;
+    private String lastName;
 
     @ManyToOne
     @JoinColumn(name = "medical_specialty_id")
@@ -22,26 +23,27 @@ public class Doctor {
 
     private String description;
 
+    @BatchSize(size = 11)
     private String phoneNumber;
 
     public UUID getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstname() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstname(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public MedicalSpecialty getMedicalSpecialty() {
@@ -72,8 +74,8 @@ public class Doctor {
     public String toString() {
         return "Doctor{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
-                ", lastname='" + lastname + '\'' +
+                ", name='" + firstName + '\'' +
+                ", lastname='" + lastName + '\'' +
                 ", medicalSpecialty='" + medicalSpecialty + '\'' +
                 ", description='" + description + '\'' +
                 ", phoneNumber=" + phoneNumber +

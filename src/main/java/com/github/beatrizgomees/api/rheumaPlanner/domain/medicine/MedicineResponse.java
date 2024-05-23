@@ -5,5 +5,11 @@ import com.github.beatrizgomees.api.rheumaPlanner.domain.medicalSpecialty.Medica
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public record MedicineRequest(UUID id, String name, int amount, LocalDateTime reminder, String description, MedicalSpecialty medicalSpecialty) {
+public record MedicineResponse(
+        UUID id,
+        String name,
+        String description,
+        int amount,
+        LocalDateTime reminder,
+        MedicalSpecialty medicalSpecialty){
 }

@@ -1,8 +1,11 @@
 package com.github.beatrizgomees.api.rheumaPlanner.application.note;
 
+import com.github.beatrizgomees.api.rheumaPlanner.domain.doctor.DoctorDTO;
+import com.github.beatrizgomees.api.rheumaPlanner.domain.medicine.MedicineRequest;
+import com.github.beatrizgomees.api.rheumaPlanner.domain.note.NoteDTO;
 import com.github.beatrizgomees.api.rheumaPlanner.service.noteService.NoteServiceImpl;
 import com.github.beatrizgomees.api.rheumaPlanner.domain.note.NoteRequest;
-import com.github.beatrizgomees.api.rheumaPlanner.domain.exceptions.FindByIdException;
+import com.github.beatrizgomees.api.rheumaPlanner.infrastructure.exceptions.FindByIdException;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -28,7 +31,8 @@ public class NoteController {
     @Operation(summary = "register new notes in the database")
     @Produces(MediaType.APPLICATION_JSON)
     public Response createNote(NoteRequest noteRequest){
-        noteServiceImpl.create(noteRequest);
+        NoteDTO noteDTO = noteServiceImpl.convertRequestToDTO(noteRequest);
+        noteServiceImpl.create(noteDTO);
         return Response.ok(noteRequest).status(201).build();
     }
 
@@ -36,7 +40,7 @@ public class NoteController {
     @Operation(summary = "Search all banknotes registered in the bank")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getNotes(){
-        List<Document> documentList = noteServiceImpl.getAll();
+        List<NoteRequest> documentList = noteServiceImpl.getAll();
         return Response.ok(documentList).status(200).build();
     }
 
@@ -46,9 +50,8 @@ public class NoteController {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response findNoteById(@PathParam("id") String id)  throws FindByIdException {
-        Document document;
-        document = noteServiceImpl.findById(id);
-        return Response.ok(document).status(200).build();
+        NoteRequest noteRequest =  noteServiceImpl.findById(id);
+        return Response.ok(noteRequest).status(200).build();
 
     }
 
@@ -68,8 +71,8 @@ public class NoteController {
     @Operation(summary = "updates notes already registered in the bank")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateNote(@PathParam("id") String id, Document document) throws FindByIdException {
-        noteServiceImpl.update(id, document);
-        return Response.ok(document).status(200).build();
+    public Response updateNote(@PathParam("id") String id, NoteRequest noteRequest) throws FindByIdException {
+        noteServiceImpl.update(id, noteRequest);
+        return Response.ok(noteRequest).status(200).build();
     }
 }

@@ -1,6 +1,6 @@
 package com.github.beatrizgomees.api.rheumaPlanner.domain;
 
-import com.github.beatrizgomees.api.rheumaPlanner.domain.exceptions.FindByIdException;
+import com.github.beatrizgomees.api.rheumaPlanner.infrastructure.exceptions.FindByIdException;
 
 import java.util.List;
 
@@ -15,8 +15,8 @@ public interface CrudService<T, U> {
 
     U update(String id, U updateDocument) throws FindByIdException;
 
+    boolean existByName(T request);
 
-     boolean existByName(T request);
-
+    T convertRequestToDTO(U request);
 
 }

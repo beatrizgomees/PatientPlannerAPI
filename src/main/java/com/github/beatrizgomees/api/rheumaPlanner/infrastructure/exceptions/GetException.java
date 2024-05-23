@@ -1,4 +1,4 @@
-package com.github.beatrizgomees.api.rheumaPlanner.domain.exceptions;
+package com.github.beatrizgomees.api.rheumaPlanner.infrastructure.exceptions;
 
 public class GetException extends RuntimeException{
     public GetException(String message) {

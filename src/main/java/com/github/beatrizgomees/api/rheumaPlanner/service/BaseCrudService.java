@@ -1,9 +1,9 @@
 package com.github.beatrizgomees.api.rheumaPlanner.service;
 
 import com.github.beatrizgomees.api.rheumaPlanner.domain.CrudService;
-import com.github.beatrizgomees.api.rheumaPlanner.domain.exceptions.FindByIdException;
+import com.github.beatrizgomees.api.rheumaPlanner.domain.doctor.DoctorDTO;
+import com.github.beatrizgomees.api.rheumaPlanner.domain.doctor.DoctorRequest;
 import com.github.beatrizgomees.api.rheumaPlanner.infrastructure.data.DataManager;
-import com.mongodb.client.FindIterable;
 import jakarta.inject.Inject;
 import org.bson.Document;
 
@@ -11,7 +11,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BaseCrudService<T, R> implements CrudService<T, R> {
+public abstract class BaseCrudService<T, R> implements CrudService<T, R> {
 
     @Inject
     DataManager dataManager;
@@ -84,6 +84,12 @@ public class BaseCrudService<T, R> implements CrudService<T, R> {
         }else{
             return true;
         }
+    }
+
+    @Override
+    public T convertRequestToDTO(R request) {
+        T dto = null;
+      return dto;
     }
 
 

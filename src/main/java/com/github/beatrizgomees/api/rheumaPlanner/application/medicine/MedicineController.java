@@ -1,6 +1,9 @@
 package com.github.beatrizgomees.api.rheumaPlanner.application.medicine;
 
-import com.github.beatrizgomees.api.rheumaPlanner.domain.exceptions.FindByIdException;
+import com.github.beatrizgomees.api.rheumaPlanner.domain.doctor.DoctorDTO;
+import com.github.beatrizgomees.api.rheumaPlanner.domain.doctor.DoctorRequest;
+import com.github.beatrizgomees.api.rheumaPlanner.domain.medicine.MedicineDTO;
+import com.github.beatrizgomees.api.rheumaPlanner.infrastructure.exceptions.FindByIdException;
 import com.github.beatrizgomees.api.rheumaPlanner.domain.medicine.MedicineRequest;
 import com.github.beatrizgomees.api.rheumaPlanner.service.medicineService.MedicineServiceImpl;
 import jakarta.inject.Inject;
@@ -28,14 +31,15 @@ public class MedicineController {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response createDoctor(MedicineRequest medicineRequest){
-       medicineService.create(medicineRequest);
+        MedicineDTO medicineDTO = medicineService.convertRequestToDTO(medicineRequest);
+        medicineService.create(medicineDTO);
         return Response.ok(medicineRequest).status(201).build();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getNotes(){
-        List<Document> documentList = medicineService.getAll();
+        List<MedicineRequest> documentList = medicineService.getAll();
         return Response.ok(documentList).status(200).build();
     }
     @GET
@@ -43,9 +47,8 @@ public class MedicineController {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response findNoteById(@PathParam("id") String id)  throws FindByIdException {
-        Document document;
-        document = medicineService.findById(id);
-        return Response.ok(document).status(200).build();
+        MedicineRequest medicineRequest =  medicineService.findById(id);
+        return Response.ok(medicineRequest).status(200).build();
 
     }
 
@@ -62,8 +65,8 @@ public class MedicineController {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateNote(@PathParam("id") String id, Document document) throws FindByIdException {
-        medicineService.update(id, document);
-        return Response.ok(document).status(200).build();
+    public Response updateNote(@PathParam("id") String id, MedicineRequest medicineRequest) throws FindByIdException {
+        medicineService.update(id, medicineRequest);
+        return Response.ok(medicineRequest).status(200).build();
     }
 }

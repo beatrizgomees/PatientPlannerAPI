@@ -1,4 +1,4 @@
-package com.github.beatrizgomees.api.rheumaPlanner.domain.exceptions;
+package com.github.beatrizgomees.api.rheumaPlanner.infrastructure.exceptions;
 
 public class FindByIdException extends  Exception{
     public FindByIdException(String message) {

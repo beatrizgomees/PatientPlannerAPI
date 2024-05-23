@@ -78,6 +78,16 @@ public class Note{
         this.createdAt = createdAt;
     }
 
+    public List<TodoList> getTodoList() {
+        return todoList;
+    }
+
+    public void setTodoList(List<TodoList> todoList) {
+        this.todoList = todoList;
+    }
+
+
+
     @Override
     public String toString() {
         return "Note{" +

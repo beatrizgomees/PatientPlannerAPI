@@ -18,6 +18,15 @@ public class MedicalSpecialty {
     private String name;
     private String description;
 
+    public MedicalSpecialty(UUID id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+    }
+
+    public MedicalSpecialty() {
+    }
+
     public UUID getId() {
         return id;
     }

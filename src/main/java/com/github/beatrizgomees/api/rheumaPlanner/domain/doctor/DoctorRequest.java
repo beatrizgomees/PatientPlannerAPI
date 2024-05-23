@@ -4,6 +4,6 @@ import com.github.beatrizgomees.api.rheumaPlanner.domain.medicalSpecialty.Medica
 
 import java.util.UUID;
 
-public record DoctorRequest (UUID id, String name, String lastname, String description, MedicalSpecialty medicalSpecialty,
+public record DoctorRequest (UUID id, String firstName, String lastname, String description, MedicalSpecialty medicalSpecialty,
                              String phoneNumber){
 }

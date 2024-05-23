@@ -3,7 +3,7 @@ Content-Type: application/json
 
 {
 
-    "name": "Bea",
+    "firstName": "Beaaaaaa",
     "lastname": "gomes",
     "medicalSpecialty": {
       "name": "reumatologia",

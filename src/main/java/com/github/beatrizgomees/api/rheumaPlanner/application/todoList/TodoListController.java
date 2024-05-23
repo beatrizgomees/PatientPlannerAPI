@@ -1,7 +1,8 @@
 package com.github.beatrizgomees.api.rheumaPlanner.application.todoList;
 
 
-import com.github.beatrizgomees.api.rheumaPlanner.domain.exceptions.FindByIdException;
+import com.github.beatrizgomees.api.rheumaPlanner.domain.todoList.TodoListDTO;
+import com.github.beatrizgomees.api.rheumaPlanner.infrastructure.exceptions.FindByIdException;
 import com.github.beatrizgomees.api.rheumaPlanner.domain.todoList.TodoListRequest;
 import com.github.beatrizgomees.api.rheumaPlanner.service.todoListService.TodoListServiceImpl;
 import jakarta.inject.Inject;
@@ -25,14 +26,15 @@ public class TodoListController {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response createNote(TodoListRequest todoListRequest){
-        todoListService.create(todoListRequest);
+       TodoListDTO todoListDTO = todoListService.convertRequestToDTO(todoListRequest);
+        todoListService.create(todoListDTO);
         return Response.ok(todoListRequest).status(201).build();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getNotes(){
-        List<Document> documentList = todoListService.getAll();
+        List<TodoListRequest> documentList = todoListService.getAll();
         return Response.ok(documentList).status(200).build();
     }
 
@@ -42,9 +44,8 @@ public class TodoListController {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response findNoteById(@PathParam("id") String id)  throws FindByIdException {
-        Document document;
-        document = todoListService.findById(id);
-        return Response.ok(document).status(200).build();
+        TodoListRequest todoListRequest = todoListService.findById(id);
+        return Response.ok(todoListRequest).status(200).build();
     }
 
     @DELETE
@@ -60,8 +61,8 @@ public class TodoListController {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateNote(@PathParam("id") String id, Document document) throws FindByIdException {
-        todoListService.update(id, document);
-        return Response.ok(document).status(200).build();
+    public Response updateNote(@PathParam("id") String id, TodoListRequest todoListRequest) throws FindByIdException {
+        todoListService.update(id, todoListRequest);
+        return Response.ok(todoListRequest).status(200).build();
     }
 }

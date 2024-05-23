@@ -1,6 +1,7 @@
 package com.github.beatrizgomees.api.rheumaPlanner.application.medicalSpecialty;
 
-import com.github.beatrizgomees.api.rheumaPlanner.domain.exceptions.FindByIdException;
+import com.github.beatrizgomees.api.rheumaPlanner.domain.medicalSpecialty.MedicalSpecialtyDTO;
+import com.github.beatrizgomees.api.rheumaPlanner.infrastructure.exceptions.FindByIdException;
 import com.github.beatrizgomees.api.rheumaPlanner.domain.medicalSpecialty.MedicalSpecialtyRequest;
 import com.github.beatrizgomees.api.rheumaPlanner.service.medicalSpecialtyService.MedicalSpecialtyServiceImpl;
 import jakarta.inject.Inject;
@@ -24,14 +25,15 @@ public class MedicalSpecialtyController {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response createDoctor(MedicalSpecialtyRequest medicalSpecialtyRequest){
-        medicalSpecialtyService.create(medicalSpecialtyRequest);
-        return Response.ok(medicalSpecialtyRequest).status(201).build();
+       MedicalSpecialtyDTO medicalSpecialtyDTO = medicalSpecialtyService.convertRequestToDTO(medicalSpecialtyRequest);
+       medicalSpecialtyService.create(medicalSpecialtyDTO);
+        return Response.ok(medicalSpecialtyDTO).status(201).build();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getNotes(){
-        List<Document> documentList = medicalSpecialtyService.getAll();
+        List<MedicalSpecialtyRequest> documentList = medicalSpecialtyService.getAll();
         return Response.ok(documentList).status(200).build();
     }
 
@@ -41,9 +43,8 @@ public class MedicalSpecialtyController {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response findNoteById(@PathParam("id") String id)  throws FindByIdException {
-        Document document;
-        document = medicalSpecialtyService.findById(id);
-        return Response.ok(document).status(200).build();
+        MedicalSpecialtyRequest medicalSpecialtyRequest = medicalSpecialtyService.findById(id);
+        return Response.ok(medicalSpecialtyRequest).status(200).build();
 
     }
 
@@ -60,9 +61,9 @@ public class MedicalSpecialtyController {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateNote(@PathParam("id") String id, Document document) throws FindByIdException {
-        medicalSpecialtyService.update(id, document);
-        return Response.ok(document).status(200).build();
+    public Response updateNote(@PathParam("id") String id, MedicalSpecialtyRequest medicalSpecialtyRequest) throws FindByIdException {
+        medicalSpecialtyService.update(id, medicalSpecialtyRequest);
+        return Response.ok(medicalSpecialtyRequest).status(200).build();
     }
 
 
