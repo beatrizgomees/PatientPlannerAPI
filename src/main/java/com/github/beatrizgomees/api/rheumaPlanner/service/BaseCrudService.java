@@ -35,7 +35,7 @@ public abstract class BaseCrudService<T, R> implements CrudService<T, R> {
 
             return document;
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace(); // Ou lance uma exceção adequada
+            e.printStackTrace();
             return null;
         }
     }
@@ -44,6 +44,9 @@ public abstract class BaseCrudService<T, R> implements CrudService<T, R> {
 
     @Override
     public T create(T request) {
+        if (request == null) {
+            throw new IllegalArgumentException("Request cannot be null");
+        }
         Document document = createDocument(request, getFieldNames(request.getClass()));
         if (document != null) {
             System.out.println(getCollectionName());
