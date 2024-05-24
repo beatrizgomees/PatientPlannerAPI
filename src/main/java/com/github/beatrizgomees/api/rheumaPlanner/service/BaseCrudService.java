@@ -5,6 +5,7 @@ import com.github.beatrizgomees.api.rheumaPlanner.domain.doctor.DoctorDTO;
 import com.github.beatrizgomees.api.rheumaPlanner.domain.doctor.DoctorRequest;
 import com.github.beatrizgomees.api.rheumaPlanner.infrastructure.data.DataManager;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.NotFoundException;
 import org.bson.Document;
 
 import java.lang.reflect.Field;
@@ -74,7 +75,16 @@ public abstract class BaseCrudService<T, R> implements CrudService<T, R> {
 
     @Override
     public void delete(UUID id) {
-        dataManager.delete(id, getCollectionName());
+        try {
+
+
+        var idExist = existById(id);
+        if(idExist) {
+            dataManager.delete(id, getCollectionName());
+        }
+        }catch (NotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -84,8 +94,8 @@ public abstract class BaseCrudService<T, R> implements CrudService<T, R> {
     }
 
     @Override
-    public boolean existByName(T request) {
-        Document exist = dataManager.findByNameGeneral(String.valueOf(request), getCollectionName());
+    public boolean existById(UUID id) {
+        Document exist = dataManager.findByIdGeneral(id, getCollectionName());
         if (exist == null || exist.isEmpty()) {
             throw new IllegalStateException();
         }else{

@@ -13,13 +13,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -35,7 +35,7 @@ public class MedicalSpecialtyTest {
     @Captor
     private ArgumentCaptor<MedicalSpecialtyDTO> medicalSpecialtyArgumentCaptor;
     @Captor
-    private ArgumentCaptor<UUID> UUIDStringArgumentCaptor;
+    private ArgumentCaptor<UUID> UUIDArgumentCaptor;
 
     @Nested
     class createMedicalSpecialty {
@@ -117,14 +117,14 @@ public class MedicalSpecialtyTest {
 
             );
 
-            doReturn(Optional.of(medicalSpecialty)).when(medicalSpecialtyService).findById(UUIDStringArgumentCaptor.capture());
+            doReturn(Optional.of(medicalSpecialty)).when(medicalSpecialtyService).findById(UUIDArgumentCaptor.capture());
 
             //Act
             var output = medicalSpecialtyService.findById(medicalSpecialty.getId());
 
             //Assert
             assertTrue(output.isPresent());
-            assertEquals(medicalSpecialty.getId(), UUIDStringArgumentCaptor.getValue());
+            assertEquals(medicalSpecialty.getId(), UUIDArgumentCaptor.getValue());
         }
 
 
@@ -138,14 +138,65 @@ public class MedicalSpecialtyTest {
 
             );
 
-            doReturn(Optional.empty()).when(medicalSpecialtyService).findById(UUIDStringArgumentCaptor.capture());
+            doReturn(Optional.empty()).when(medicalSpecialtyService).findById(UUIDArgumentCaptor.capture());
 
             //Act
             var output = medicalSpecialtyService.findById(medicalSpecialty.getId());
 
             //Assert
             assertTrue(output.isEmpty());
-            assertEquals(medicalSpecialty.getId(), UUIDStringArgumentCaptor.getValue());
+            assertEquals(medicalSpecialty.getId(), UUIDArgumentCaptor.getValue());
+        }
+    }
+
+    @Nested
+    class listMedicalSpecialtys {
+
+        @Test
+        @DisplayName("Should return all medical specialtys with sucess")
+        void shouldReturnAllMedicalSpecialtysWithSucess() {
+            //Arrange
+            var medicalSpecialty = new MedicalSpecialty(
+                    UUID.randomUUID(),
+                    "Lupus",
+                    "Les"
+
+            );
+            var medicalSpecialList = List.of(medicalSpecialty);
+            doReturn(medicalSpecialList).when(medicalSpecialtyService).getAll();
+
+            //Act
+            var output = medicalSpecialtyService.getAll();
+            //Assert
+            assertNotNull(output);
+            assertEquals(medicalSpecialList.size(), output.size());
+
+        }
+    }
+
+    @Nested
+    class deleteMedicalSpecialtyById{
+
+        @Test
+        @DisplayName("Should delete medical specialty by id")
+        void shouldDeleteMedicalSpecialtyById(){
+            //Arrange
+
+            UUID id = UUID.randomUUID();
+
+            doNothing()
+                    .when(medicalSpecialtyService)
+                    .delete(UUIDArgumentCaptor.capture());
+
+            //Act
+            medicalSpecialtyService.delete(id);
+
+            //Assert
+            var idList = UUIDArgumentCaptor.getAllValues();
+
+            assertEquals(id, idList.get(0));
+
+
         }
     }
 }

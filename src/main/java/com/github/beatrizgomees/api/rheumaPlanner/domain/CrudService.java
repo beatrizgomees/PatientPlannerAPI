@@ -17,7 +17,7 @@ public interface CrudService<T, U> {
 
     U update(String id, U updateDocument) throws FindByIdException;
 
-    boolean existByName(T request);
+    boolean existById(UUID id);
 
     T convertRequestToDTO(U request);
 
