@@ -8,8 +8,8 @@ import jakarta.inject.Inject;
 import org.bson.Document;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.function.Consumer;
 
 public abstract class BaseCrudService<T, R> implements CrudService<T, R> {
 
@@ -49,7 +49,11 @@ public abstract class BaseCrudService<T, R> implements CrudService<T, R> {
         }
         Document document = createDocument(request, getFieldNames(request.getClass()));
         if (document != null) {
-            System.out.println(getCollectionName());
+            for (Map.Entry<String, Object> entry : document.entrySet()) {
+                if (entry.getValue() == null) {
+                    throw new IllegalStateException("Campo '" + entry.getKey() + "' não pode ser nulo.");
+                }
+            }
             dataManager.create(document, getCollectionName());
             return request;
         } else {
@@ -64,12 +68,12 @@ public abstract class BaseCrudService<T, R> implements CrudService<T, R> {
     }
 
     @Override
-    public R findById(String id){
-        return (R) dataManager.findByIdGeneral(id, getCollectionName());
+    public Optional<R> findById(UUID id){
+        return Optional.ofNullable((R) dataManager.findByIdGeneral(id, getCollectionName()));
     }
 
     @Override
-    public void delete(String id) {
+    public void delete(UUID id) {
         dataManager.delete(id, getCollectionName());
     }
 
@@ -97,12 +101,19 @@ public abstract class BaseCrudService<T, R> implements CrudService<T, R> {
 
 
     protected String[] getFieldNames(Class<?> clazz) {
-        List<String> fieldNamesList = new ArrayList<>();
-        Field[] fields = clazz.getDeclaredFields();
-        for (Field field : fields) {
-            fieldNamesList.add(field.getName());
+        try {
+            List<String> fieldNamesList = new ArrayList<>();
+            Field[] fields = clazz.getDeclaredFields();
+            for (Field field : fields) {
+                if (field != null) {
+                    fieldNamesList.add(field.getName());
+                }
+            }
+            return fieldNamesList.toArray(new String[0]);
+        }catch (Exception e) {
+            e.printStackTrace();
         }
-        return fieldNamesList.toArray(new String[0]);
+        return null;
     }
 
 

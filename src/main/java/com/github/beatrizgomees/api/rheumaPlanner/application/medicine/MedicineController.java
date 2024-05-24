@@ -14,6 +14,8 @@ import org.bson.Document;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Path("/medicines")
 @Tag(name = "medicines")
@@ -46,8 +48,8 @@ public class MedicineController {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response findNoteById(@PathParam("id") String id)  throws FindByIdException {
-        MedicineRequest medicineRequest =  medicineService.findById(id);
+    public Response findNoteById(@PathParam("id") UUID id)  throws FindByIdException {
+        Optional<MedicineRequest> medicineRequest =  medicineService.findById(id);
         return Response.ok(medicineRequest).status(200).build();
 
     }
@@ -56,7 +58,7 @@ public class MedicineController {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response deleteOneNote(@PathParam("id") String id){
+    public Response deleteOneNote(@PathParam("id") UUID id){
         medicineService.delete(id);
         return Response.ok().status(200).build();
     }

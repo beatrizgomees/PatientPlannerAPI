@@ -13,6 +13,8 @@ import org.bson.Document;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Path("/todoList")
 @Tag(name = "todoList")
@@ -43,8 +45,8 @@ public class TodoListController {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response findNoteById(@PathParam("id") String id)  throws FindByIdException {
-        TodoListRequest todoListRequest = todoListService.findById(id);
+    public Response findNoteById(@PathParam("id") UUID id)  throws FindByIdException {
+        Optional<TodoListRequest> todoListRequest = todoListService.findById(id);
         return Response.ok(todoListRequest).status(200).build();
     }
 
@@ -52,7 +54,7 @@ public class TodoListController {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response deleteOneNote(@PathParam("id") String id){
+    public Response deleteOneNote(@PathParam("id") UUID id){
         todoListService.delete(id);
         return Response.ok().status(200).build();
     }

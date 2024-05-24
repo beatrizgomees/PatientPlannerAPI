@@ -14,6 +14,7 @@ import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -43,7 +44,7 @@ public class DataManager implements PanacheMongoRepository {
         return documents;
     }
 
-    public Document findByIdGeneral(String id, String collectionName){
+    public Document findByIdGeneral(UUID id, String collectionName){
         return getCollection(collectionName).find(eq("_id", new ObjectId(String.valueOf(id)))).first();
     }
 
@@ -51,8 +52,8 @@ public class DataManager implements PanacheMongoRepository {
         return getCollection(collectionName).find(eq("name", name)).first();
     }
 
-    public void delete(String id, String collectionName) {
-        getCollection(collectionName).findOneAndDelete(eq("_id", new ObjectId(id)));
+    public void delete(UUID id, String collectionName) {
+        getCollection(collectionName).findOneAndDelete(eq("_id", new ObjectId(String.valueOf(id))));
     }
 
     public Document updateGenereal(String id, Document updateNote, String collectionName){

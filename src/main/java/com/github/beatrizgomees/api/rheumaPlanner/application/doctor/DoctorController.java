@@ -12,6 +12,8 @@ import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Path("/doctor")
 @Tag(name = "doctor")
@@ -42,8 +44,8 @@ public class DoctorController {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response findNoteById(@PathParam("id") String id){
-        DoctorRequest doctorRequest = doctorServiceImpl.findById(id);
+    public Response findNoteById(@PathParam("id") UUID id){
+        Optional<DoctorRequest> doctorRequest = doctorServiceImpl.findById(id);
         return Response.ok(doctorRequest).status(200).build();
 
     }
@@ -52,7 +54,7 @@ public class DoctorController {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response deleteOneNote(@PathParam("id") String id){
+    public Response deleteOneNote(@PathParam("id") UUID id){
         doctorServiceImpl.delete(id);
         return Response.ok().status(200).build();
     }

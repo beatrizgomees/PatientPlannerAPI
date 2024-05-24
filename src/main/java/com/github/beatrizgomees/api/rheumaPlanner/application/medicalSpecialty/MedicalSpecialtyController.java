@@ -1,6 +1,7 @@
 package com.github.beatrizgomees.api.rheumaPlanner.application.medicalSpecialty;
 
 import com.github.beatrizgomees.api.rheumaPlanner.domain.medicalSpecialty.MedicalSpecialtyDTO;
+import com.github.beatrizgomees.api.rheumaPlanner.domain.medicalSpecialty.MedicalSpecialtyMapper;
 import com.github.beatrizgomees.api.rheumaPlanner.infrastructure.exceptions.FindByIdException;
 import com.github.beatrizgomees.api.rheumaPlanner.domain.medicalSpecialty.MedicalSpecialtyRequest;
 import com.github.beatrizgomees.api.rheumaPlanner.service.medicalSpecialtyService.MedicalSpecialtyServiceImpl;
@@ -12,6 +13,8 @@ import org.bson.Document;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Path("/specialty")
 @Tag(name = "specialty")
@@ -24,10 +27,19 @@ public class MedicalSpecialtyController {
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createDoctor(MedicalSpecialtyRequest medicalSpecialtyRequest){
-       MedicalSpecialtyDTO medicalSpecialtyDTO = medicalSpecialtyService.convertRequestToDTO(medicalSpecialtyRequest);
-       medicalSpecialtyService.create(medicalSpecialtyDTO);
-        return Response.ok(medicalSpecialtyDTO).status(201).build();
+    public Response createMedicalSpecialty(MedicalSpecialtyRequest medicalSpecialtyRequest){
+        try {
+            if (medicalSpecialtyRequest.name() == null) {
+                throw new NullPointerException("Name cannot be null");
+            }
+            MedicalSpecialtyMapper medicalSpecialtyMapper = new MedicalSpecialtyMapper();
+            var dto = medicalSpecialtyMapper.convertRequestToDTO(medicalSpecialtyRequest);
+            medicalSpecialtyService.create(dto);
+
+            return Response.ok(medicalSpecialtyRequest).status(201).build();
+        } catch (NullPointerException e) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
     }
 
     @GET
@@ -42,8 +54,8 @@ public class MedicalSpecialtyController {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response findNoteById(@PathParam("id") String id)  throws FindByIdException {
-        MedicalSpecialtyRequest medicalSpecialtyRequest = medicalSpecialtyService.findById(id);
+    public Response findNoteById(@PathParam("id") UUID id)  throws FindByIdException {
+        Optional<MedicalSpecialtyRequest> medicalSpecialtyRequest = medicalSpecialtyService.findById(id);
         return Response.ok(medicalSpecialtyRequest).status(200).build();
 
     }
@@ -52,7 +64,7 @@ public class MedicalSpecialtyController {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response deleteOneNote(@PathParam("id") String id){
+    public Response deleteOneNote(@PathParam("id") UUID id){
         medicalSpecialtyService.delete(id);
         return Response.ok().status(200).build();
     }
@@ -61,8 +73,8 @@ public class MedicalSpecialtyController {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateNote(@PathParam("id") String id, MedicalSpecialtyRequest medicalSpecialtyRequest) throws FindByIdException {
-        medicalSpecialtyService.update(id, medicalSpecialtyRequest);
+    public Response updateNote(@PathParam("id") String id, MedicalSpecialtyRequest medicalSpecialtyRequest){
+        medicalSpecialtyService.update(id,medicalSpecialtyRequest);
         return Response.ok(medicalSpecialtyRequest).status(200).build();
     }
 

@@ -27,6 +27,9 @@ public class MedicalSpecialty {
     public MedicalSpecialty() {
     }
 
+    public MedicalSpecialty(String name, String description) {
+    }
+
     public UUID getId() {
         return id;
     }

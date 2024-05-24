@@ -15,6 +15,8 @@ import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 
 @Path("/notes" )
@@ -49,8 +51,8 @@ public class NoteController {
     @Operation(summary = "Search for notes registered at the bank by ID")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response findNoteById(@PathParam("id") String id)  throws FindByIdException {
-        NoteRequest noteRequest =  noteServiceImpl.findById(id);
+    public Response findNoteById(@PathParam("id") UUID id)  throws FindByIdException {
+        Optional<NoteRequest> noteRequest =  noteServiceImpl.findById(id);
         return Response.ok(noteRequest).status(200).build();
 
     }
@@ -60,7 +62,7 @@ public class NoteController {
     @Operation(summary = "delete notes by id")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response deleteOneNote(@PathParam("id") String id){
+    public Response deleteOneNote(@PathParam("id") UUID id){
         noteServiceImpl.delete(id);
         return Response.ok().status(200).build();
     }

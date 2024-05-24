@@ -1,6 +1,7 @@
 package com.github.beatrizgomees.api.rheumaPlanner.service.medicalSpecialtyService;
 
 
+import com.github.beatrizgomees.api.rheumaPlanner.domain.CrudService;
 import com.github.beatrizgomees.api.rheumaPlanner.domain.medicalSpecialty.MedicalSpecialtyDTO;
 import com.github.beatrizgomees.api.rheumaPlanner.domain.medicalSpecialty.MedicalSpecialtyMapper;
 import com.github.beatrizgomees.api.rheumaPlanner.domain.medicalSpecialty.MedicalSpecialtyRequest;
@@ -11,18 +12,13 @@ import jakarta.enterprise.context.ApplicationScoped;
 public class MedicalSpecialtyServiceImpl extends BaseCrudService<MedicalSpecialtyDTO, MedicalSpecialtyRequest> {
 
 
-    public MedicalSpecialtyServiceImpl() {
-
+    public MedicalSpecialtyDTO convertRequestToDTO(MedicalSpecialtyRequest request) {
+        MedicalSpecialtyMapper mapper = new MedicalSpecialtyMapper();
+        return mapper.convertRequestToDTO(request);
     }
 
     @Override
     public String getCollectionName() {
         return "medicalSpecialty";
-    }
-
-    @Override
-    public MedicalSpecialtyDTO convertRequestToDTO(MedicalSpecialtyRequest request) {
-        MedicalSpecialtyMapper mapper = new MedicalSpecialtyMapper();
-        return mapper.convertRequestToDTO(request);
     }
 }
