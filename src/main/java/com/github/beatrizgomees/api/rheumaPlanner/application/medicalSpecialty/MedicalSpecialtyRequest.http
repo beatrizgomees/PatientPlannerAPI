@@ -3,14 +3,14 @@ Content-Type: application/json
 
 {
 
-  "name": null,
+  "name": "reumatologia",
   "description": "lupus"
 
 }
 
 ###
 
-GET http://localhost:8080/notes
+GET http://localhost:8081/specialty
 Content-Type: application/json
 
 

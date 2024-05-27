@@ -3,10 +3,10 @@ Content-Type: application/json
 
 {
 
-    "firstName": "Beaaaaaa",
+    "firstName": "teste id",
     "lastname": "gomes",
     "medicalSpecialty": {
-      "name": "reumatologia",
+      "name": "lupus",
       "description": "lupus"
     },
     "description": "medico gastro hc",

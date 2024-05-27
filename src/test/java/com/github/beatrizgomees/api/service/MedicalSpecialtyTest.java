@@ -45,12 +45,14 @@ public class MedicalSpecialtyTest {
         void shouldCreateMedicalSpecialty() {
 
             var medicalSpecialty = new MedicalSpecialtyDTO(
+                    UUID.randomUUID(),
                     "Lupus",
                     "Les"
 
             );
             doReturn(medicalSpecialty).when(medicalSpecialtyService).create(medicalSpecialtyArgumentCaptor.capture());
             var input = new MedicalSpecialtyDTO(
+                    UUID.randomUUID(),
                     "Lupus",
                     "Tratamento de Les"
 
@@ -72,6 +74,7 @@ public class MedicalSpecialtyTest {
         void shouldThrowExceptionWhenErrorOccurs() throws IllegalAccessException {
 
             var input = new MedicalSpecialtyDTO(
+                    UUID.randomUUID(),
                     "Reumatologia",
                     "Tratamento de Les"
 
@@ -87,7 +90,8 @@ public class MedicalSpecialtyTest {
         @DisplayName("Should throw exception when create medical specialty with email null")
         void shouldThrowExceptionWhenCreateMedicalSpecialtyWithEmailNull() throws IllegalAccessException {
             var input = new MedicalSpecialtyDTO(
-                    null,
+                    UUID.randomUUID(),
+                    "Reumatologia",
                     "Tratamento de Les"
 
             );
@@ -178,24 +182,23 @@ public class MedicalSpecialtyTest {
     class deleteMedicalSpecialtyById{
 
         @Test
-        @DisplayName("Should delete medical specialty by id")
-        void shouldDeleteMedicalSpecialtyById(){
+        @DisplayName("Should delete medical specialty with sucess when medical specialty exists")
+        void shouldDeleteMedicalSpecialtyByIdWithSuccessWhenOptionalIsPresent(){
             //Arrange
-
-            UUID id = UUID.randomUUID();
+            //Why doReturn not run?
 
             doNothing()
                     .when(medicalSpecialtyService)
                     .delete(UUIDArgumentCaptor.capture());
 
-            //Act
-            medicalSpecialtyService.delete(id);
+            var medicalSpecialtyId = UUID.randomUUID();
 
-            //Assert
+            // Act
+            medicalSpecialtyService.delete(medicalSpecialtyId);
+
+            // Assert
             var idList = UUIDArgumentCaptor.getAllValues();
-
-            assertEquals(id, idList.get(0));
-
+            assertEquals(medicalSpecialtyId, idList.get(0));
 
         }
     }

@@ -3,6 +3,7 @@ package com.github.beatrizgomees.api.rheumaPlanner.application.medicine;
 import com.github.beatrizgomees.api.rheumaPlanner.domain.doctor.DoctorDTO;
 import com.github.beatrizgomees.api.rheumaPlanner.domain.doctor.DoctorRequest;
 import com.github.beatrizgomees.api.rheumaPlanner.domain.medicine.MedicineDTO;
+import com.github.beatrizgomees.api.rheumaPlanner.domain.medicine.MedicineMapper;
 import com.github.beatrizgomees.api.rheumaPlanner.infrastructure.exceptions.FindByIdException;
 import com.github.beatrizgomees.api.rheumaPlanner.domain.medicine.MedicineRequest;
 import com.github.beatrizgomees.api.rheumaPlanner.service.medicineService.MedicineServiceImpl;
@@ -33,7 +34,8 @@ public class MedicineController {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response createDoctor(MedicineRequest medicineRequest){
-        MedicineDTO medicineDTO = medicineService.convertRequestToDTO(medicineRequest);
+        MedicineMapper mapper = new MedicineMapper();
+        MedicineDTO medicineDTO = mapper.convertRequestToDTO(medicineRequest);
         medicineService.create(medicineDTO);
         return Response.ok(medicineRequest).status(201).build();
     }
@@ -41,7 +43,7 @@ public class MedicineController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getNotes(){
-        List<MedicineRequest> documentList = medicineService.getAll();
+        List<Document> documentList = medicineService.getAll();
         return Response.ok(documentList).status(200).build();
     }
     @GET
@@ -49,7 +51,7 @@ public class MedicineController {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response findNoteById(@PathParam("id") UUID id)  throws FindByIdException {
-        Optional<MedicineRequest> medicineRequest =  medicineService.findById(id);
+        Optional<Document> medicineRequest =  medicineService.findById(id);
         return Response.ok(medicineRequest).status(200).build();
 
     }
@@ -68,7 +70,10 @@ public class MedicineController {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateNote(@PathParam("id") String id, MedicineRequest medicineRequest) throws FindByIdException {
-        medicineService.update(id, medicineRequest);
+        MedicineMapper mapper = new MedicineMapper();
+        MedicineDTO medicineDTO = mapper.convertRequestToDTO(medicineRequest);
+        Document document = mapper.convertDtoToDocument(medicineDTO);
+        medicineService.update(UUID.fromString(id), document);
         return Response.ok(medicineRequest).status(200).build();
     }
 }

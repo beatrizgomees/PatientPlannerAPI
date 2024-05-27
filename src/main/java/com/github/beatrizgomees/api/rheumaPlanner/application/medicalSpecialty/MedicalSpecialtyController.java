@@ -1,5 +1,6 @@
 package com.github.beatrizgomees.api.rheumaPlanner.application.medicalSpecialty;
 
+import com.github.beatrizgomees.api.rheumaPlanner.domain.doctor.DoctorDTO;
 import com.github.beatrizgomees.api.rheumaPlanner.domain.medicalSpecialty.MedicalSpecialtyDTO;
 import com.github.beatrizgomees.api.rheumaPlanner.domain.medicalSpecialty.MedicalSpecialtyMapper;
 import com.github.beatrizgomees.api.rheumaPlanner.infrastructure.exceptions.FindByIdException;
@@ -45,7 +46,7 @@ public class MedicalSpecialtyController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getNotes(){
-        List<MedicalSpecialtyRequest> documentList = medicalSpecialtyService.getAll();
+        List<Document> documentList = medicalSpecialtyService.getAll();
         return Response.ok(documentList).status(200).build();
     }
 
@@ -55,7 +56,7 @@ public class MedicalSpecialtyController {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response findNoteById(@PathParam("id") UUID id)  throws FindByIdException {
-        Optional<MedicalSpecialtyRequest> medicalSpecialtyRequest = medicalSpecialtyService.findById(id);
+        Optional<Document> medicalSpecialtyRequest = medicalSpecialtyService.findById(id);
         return Response.ok(medicalSpecialtyRequest).status(200).build();
 
     }
@@ -73,8 +74,11 @@ public class MedicalSpecialtyController {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateNote(@PathParam("id") String id, MedicalSpecialtyRequest medicalSpecialtyRequest){
-        medicalSpecialtyService.update(id,medicalSpecialtyRequest);
+    public Response updateNote(@PathParam("id") String id, MedicalSpecialtyRequest medicalSpecialtyRequest) throws FindByIdException {
+        MedicalSpecialtyMapper mapper = new MedicalSpecialtyMapper();
+        MedicalSpecialtyDTO medicalSpecialtyDTO = mapper.convertRequestToDTO(medicalSpecialtyRequest);
+        Document document = mapper.convertDtoToDocument(medicalSpecialtyDTO);
+        medicalSpecialtyService.update(UUID.fromString(id),document);
         return Response.ok(medicalSpecialtyRequest).status(200).build();
     }
 

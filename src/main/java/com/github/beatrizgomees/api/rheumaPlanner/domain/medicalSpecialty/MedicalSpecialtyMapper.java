@@ -50,6 +50,7 @@ public class MedicalSpecialtyMapper {
             return null;
         }
         return new MedicalSpecialtyDTO(
+                medicalSpecialtyRequest.id(),
                 medicalSpecialtyRequest.name(),
                 medicalSpecialtyRequest.description()
         );

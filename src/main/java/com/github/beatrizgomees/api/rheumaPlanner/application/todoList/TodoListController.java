@@ -2,6 +2,7 @@ package com.github.beatrizgomees.api.rheumaPlanner.application.todoList;
 
 
 import com.github.beatrizgomees.api.rheumaPlanner.domain.todoList.TodoListDTO;
+import com.github.beatrizgomees.api.rheumaPlanner.domain.todoList.TodoListMapper;
 import com.github.beatrizgomees.api.rheumaPlanner.infrastructure.exceptions.FindByIdException;
 import com.github.beatrizgomees.api.rheumaPlanner.domain.todoList.TodoListRequest;
 import com.github.beatrizgomees.api.rheumaPlanner.service.todoListService.TodoListServiceImpl;
@@ -28,7 +29,8 @@ public class TodoListController {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response createNote(TodoListRequest todoListRequest){
-       TodoListDTO todoListDTO = todoListService.convertRequestToDTO(todoListRequest);
+        TodoListMapper mapper = new TodoListMapper();
+        TodoListDTO todoListDTO = mapper.convertRequestToDTO(todoListRequest);
         todoListService.create(todoListDTO);
         return Response.ok(todoListRequest).status(201).build();
     }
@@ -36,7 +38,7 @@ public class TodoListController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getNotes(){
-        List<TodoListRequest> documentList = todoListService.getAll();
+        List<Document> documentList = todoListService.getAll();
         return Response.ok(documentList).status(200).build();
     }
 
@@ -46,7 +48,7 @@ public class TodoListController {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response findNoteById(@PathParam("id") UUID id)  throws FindByIdException {
-        Optional<TodoListRequest> todoListRequest = todoListService.findById(id);
+        Optional<Document> todoListRequest = todoListService.findById(id);
         return Response.ok(todoListRequest).status(200).build();
     }
 
@@ -64,7 +66,10 @@ public class TodoListController {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateNote(@PathParam("id") String id, TodoListRequest todoListRequest) throws FindByIdException {
-        todoListService.update(id, todoListRequest);
+        TodoListMapper mapper = new TodoListMapper();
+        TodoListDTO todoListDTO = mapper.convertRequestToDTO(todoListRequest);
+        Document document = mapper.convertDtoToDocument(todoListDTO);
+        todoListService.update(UUID.fromString(id), document);
         return Response.ok(todoListRequest).status(200).build();
     }
 }

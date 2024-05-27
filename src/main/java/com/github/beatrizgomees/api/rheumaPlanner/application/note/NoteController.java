@@ -1,8 +1,8 @@
 package com.github.beatrizgomees.api.rheumaPlanner.application.note;
 
-import com.github.beatrizgomees.api.rheumaPlanner.domain.doctor.DoctorDTO;
-import com.github.beatrizgomees.api.rheumaPlanner.domain.medicine.MedicineRequest;
+
 import com.github.beatrizgomees.api.rheumaPlanner.domain.note.NoteDTO;
+import com.github.beatrizgomees.api.rheumaPlanner.domain.note.NoteMapper;
 import com.github.beatrizgomees.api.rheumaPlanner.service.noteService.NoteServiceImpl;
 import com.github.beatrizgomees.api.rheumaPlanner.domain.note.NoteRequest;
 import com.github.beatrizgomees.api.rheumaPlanner.infrastructure.exceptions.FindByIdException;
@@ -13,7 +13,6 @@ import jakarta.ws.rs.core.Response;
 import org.bson.Document;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -42,7 +41,7 @@ public class NoteController {
     @Operation(summary = "Search all banknotes registered in the bank")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getNotes(){
-        List<NoteRequest> documentList = noteServiceImpl.getAll();
+        List<Document> documentList = noteServiceImpl.getAll();
         return Response.ok(documentList).status(200).build();
     }
 
@@ -52,7 +51,7 @@ public class NoteController {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response findNoteById(@PathParam("id") UUID id)  throws FindByIdException {
-        Optional<NoteRequest> noteRequest =  noteServiceImpl.findById(id);
+        Optional<Document> noteRequest =  noteServiceImpl.findById(id);
         return Response.ok(noteRequest).status(200).build();
 
     }
@@ -74,7 +73,10 @@ public class NoteController {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateNote(@PathParam("id") String id, NoteRequest noteRequest) throws FindByIdException {
-        noteServiceImpl.update(id, noteRequest);
+        NoteMapper mapper = new NoteMapper();
+        NoteDTO noteDTO = mapper.convertRequestToDTO(noteRequest);
+        Document document = mapper.convertDtoToDocument(noteDTO);
+        noteServiceImpl.update(UUID.fromString(id), document);
         return Response.ok(noteRequest).status(200).build();
     }
 }

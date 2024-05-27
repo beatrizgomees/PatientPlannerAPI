@@ -1,8 +1,6 @@
 package com.github.beatrizgomees.api.rheumaPlanner.service;
 
 import com.github.beatrizgomees.api.rheumaPlanner.domain.CrudService;
-import com.github.beatrizgomees.api.rheumaPlanner.domain.doctor.DoctorDTO;
-import com.github.beatrizgomees.api.rheumaPlanner.domain.doctor.DoctorRequest;
 import com.github.beatrizgomees.api.rheumaPlanner.infrastructure.data.DataManager;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.NotFoundException;
@@ -10,10 +8,9 @@ import org.bson.Document;
 
 import java.lang.reflect.Field;
 import java.util.*;
-import java.util.function.Consumer;
 
 public abstract class BaseCrudService<T, R> implements CrudService<T, R> {
-
+/*
     @Inject
     DataManager dataManager;
     private String collectionName;
@@ -45,6 +42,7 @@ public abstract class BaseCrudService<T, R> implements CrudService<T, R> {
 
     @Override
     public T create(T request) {
+        UUID id = null;
         if (request == null) {
             throw new IllegalArgumentException("Request cannot be null");
         }
@@ -137,4 +135,6 @@ public abstract class BaseCrudService<T, R> implements CrudService<T, R> {
     }
 
 
+
+ */
 }

@@ -1,6 +1,7 @@
 package com.github.beatrizgomees.api.rheumaPlanner.application.doctor;
 
 import com.github.beatrizgomees.api.rheumaPlanner.domain.doctor.DoctorDTO;
+import com.github.beatrizgomees.api.rheumaPlanner.domain.doctor.DoctorMapper;
 import com.github.beatrizgomees.api.rheumaPlanner.domain.doctor.DoctorResponse;
 import com.github.beatrizgomees.api.rheumaPlanner.infrastructure.exceptions.FindByIdException;
 import com.github.beatrizgomees.api.rheumaPlanner.domain.doctor.DoctorRequest;
@@ -9,6 +10,7 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.bson.Document;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import java.util.List;
@@ -27,7 +29,8 @@ public class DoctorController {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response createDoctor(DoctorRequest doctorRequest) {
-        DoctorDTO doctorDTO = doctorServiceImpl.convertRequestToDTO(doctorRequest);
+        DoctorMapper mapper = new DoctorMapper();
+        DoctorDTO doctorDTO = mapper.convertRequestToDTO(doctorRequest);
         doctorServiceImpl.create(doctorDTO);
         return Response.ok(doctorDTO).status(201).build();
     }
@@ -35,7 +38,7 @@ public class DoctorController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getNotes(){
-        List<DoctorRequest> documentList = doctorServiceImpl.getAll();
+        List<Document> documentList = doctorServiceImpl.getAll();
         return Response.ok(documentList).status(200).build();
     }
 
@@ -44,8 +47,8 @@ public class DoctorController {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response findNoteById(@PathParam("id") UUID id){
-        Optional<DoctorRequest> doctorRequest = doctorServiceImpl.findById(id);
+    public Response findNoteById(@PathParam("id") String id){
+        Optional<Document> doctorRequest = doctorServiceImpl.findById(UUID.fromString(id));
         return Response.ok(doctorRequest).status(200).build();
 
     }
@@ -54,8 +57,8 @@ public class DoctorController {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response deleteOneNote(@PathParam("id") UUID id){
-        doctorServiceImpl.delete(id);
+    public Response deleteOneNote(@PathParam("id") String id){
+        doctorServiceImpl.delete(UUID.fromString(id));
         return Response.ok().status(200).build();
     }
 
@@ -64,7 +67,10 @@ public class DoctorController {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateNote(@PathParam("id") String id, DoctorRequest doctorRequest) throws FindByIdException {
-        doctorServiceImpl.update(id, doctorRequest);
+        DoctorMapper mapper = new DoctorMapper();
+        DoctorDTO doctorDTO = mapper.convertRequestToDTO(doctorRequest);
+        Document document = mapper.convertDtoToDocument(doctorDTO);
+        doctorServiceImpl.update(UUID.fromString(id), document);
         return Response.ok(doctorRequest).status(200).build();
     }
 
