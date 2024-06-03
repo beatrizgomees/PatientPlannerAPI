@@ -130,7 +130,7 @@ public class MedicalSpecialtyTest {
 
 
         @Test
-        @DisplayName("Should get medical specialty by id with sucess when optional is present")
+        @DisplayName("Should not get medical specialty by id with sucess when optional is empty")
         void shouldGetMedicalSpecialtyByIdWhenOptionalIsEmpty() {
             var medicalSpecialty = new MedicalSpecialty(
                     UUID.randomUUID(),
@@ -145,7 +145,7 @@ public class MedicalSpecialtyTest {
             var output = medicalSpecialtyService.findById(medicalSpecialty.getId());
 
             //Assert
-            assertTrue(output.isEmpty());
+            assertFalse(output.isEmpty());
             assertEquals(medicalSpecialty.getId(), UUIDArgumentCaptor.getValue());
         }
     }

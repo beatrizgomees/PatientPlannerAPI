@@ -13,14 +13,12 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
-
 import static io.smallrye.common.constraint.Assert.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.doThrow;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class DoctorServiceTest {
@@ -32,6 +30,10 @@ public class DoctorServiceTest {
 
     @Captor
     private ArgumentCaptor<DoctorDTO> doctorDTOArgumentCaptor;
+
+    @Captor
+    private ArgumentCaptor<UUID> UUIDArgumentCaptor;
+
 
 
 
@@ -54,7 +56,6 @@ public class DoctorServiceTest {
                     "819964523",
                     "Meu reumatologista do HC"
             );
-
 
 
             doReturn(doctorDto).when(doctorService).create(doctorDTOArgumentCaptor.capture());
@@ -130,6 +131,118 @@ public class DoctorServiceTest {
 
             doThrow(new NullPointerException()).when(doctorService).create(input);
             assertThrows(NullPointerException.class, () -> doctorService.create(input));
+
+        }
+    }
+
+
+    @Nested
+    class getDoctorById{
+
+        @Test
+        @DisplayName("Should get doctor by id with sucess when optional is present")
+        public void shouldGetDoctorById() {
+            var InputmedicalSpecialty = new MedicalSpecialtyDTO(
+                    UUID.randomUUID(),
+                    "Lupus",
+                    "Les"
+
+            );
+
+            var input = new DoctorDTO(
+                    UUID.randomUUID(),
+                    "BEA",
+                    "gomes",
+                    InputmedicalSpecialty,
+                    "819964523",
+                    "Meu reumatologista do HC"
+            );
+
+            doReturn(Optional.of(input)).when(doctorService).findById(UUIDArgumentCaptor.capture());
+
+            var output = doctorService.findById(input.id());
+
+            assertTrue(output.isPresent());
+            assertEquals(input.id(),UUIDArgumentCaptor.getValue());
+        }
+
+        @Test
+        @DisplayName("Should not get doctor by id with sucess when optional is empty")
+        public void shouldGetDoctorByIdWhenOptionalIsEmpty(){
+            var InputmedicalSpecialty = new MedicalSpecialtyDTO(
+                    UUID.randomUUID(),
+                    "Lupus",
+                    "Les"
+
+            );
+
+            var input = new DoctorDTO(
+                    UUID.randomUUID(),
+                    "BEA",
+                    "gomes",
+                    InputmedicalSpecialty,
+                    "819964523",
+                    "Meu reumatologista do HC"
+            );
+
+            doReturn(Optional.empty()).when(doctorService).findById(UUIDArgumentCaptor.capture());
+            var output = doctorService.findById(input.id());
+
+            assertFalse(output.isPresent());
+            assertEquals(input.id(),UUIDArgumentCaptor.getValue());
+        }
+
+    }
+
+    @Nested
+    class listDoctor{
+
+
+        @Test
+        @DisplayName("Should return all doctor with sucess")
+        public void shouldReturnAllMedicalSpecialtysWithSucess(){
+            var InputmedicalSpecialty = new MedicalSpecialtyDTO(
+                    UUID.randomUUID(),
+                    "Lupus",
+                    "Les"
+
+            );
+
+            var input = new DoctorDTO(
+                    UUID.randomUUID(),
+                    "BEA",
+                    "gomes",
+                    InputmedicalSpecialty,
+                    "819964523",
+                    "Meu reumatologista do HC"
+            );
+
+            var doctorList = List.of(input);
+            doReturn(doctorList).when(doctorService).getAll();
+
+            var output = doctorService.getAll();
+            assertNotNull(output);
+            assertEquals(doctorList.size(), output.size());
+
+        }
+
+    }
+
+    @Nested
+    class deleteDoctorById{
+
+        @Test
+        @DisplayName("Should delete doctor with sucess when medical specialty exists")
+        public void deleteDoctorById(){
+
+            doNothing().when(doctorService).delete(UUIDArgumentCaptor.capture());
+
+            var doctorId = UUID.randomUUID();
+
+            doctorService.delete(doctorId);
+
+            var idList = UUIDArgumentCaptor.getAllValues();
+            assertEquals(doctorId, idList.get(0));
 
         }
     }
