@@ -117,7 +117,7 @@ public class DoctorServiceImpl implements CrudService<DoctorDTO, Document> {
     }
 
     public boolean existsMedicalSpecialtyByName(DoctorDTO doctorDTO) {
-        Document existingSpecialty = dataManager.findEspecialtyByName(String.valueOf(doctorDTO.medicalSpecialty().getName()), "medicalSpecialty");
+        Document existingSpecialty = dataManager.findEspecialtyByName(String.valueOf(doctorDTO.medicalSpecialty().name()), "medicalSpecialty");
         if (existingSpecialty == null || existingSpecialty.isEmpty()) {
             throw new IllegalStateException("Nao existe uma especialidade com esse nome.");
         }else{

@@ -8,11 +8,12 @@ public class DoctorMapper {
         if (doctorDTO == null) {
             return null;
         }
+
         Doctor doctor = new Doctor();
         doctor.setFirstname(doctorDTO.firstName());
         doctor.setDescription(doctorDTO.description());
         doctor.setLastName(doctorDTO.lastName());
-        doctor.setMedicalSpecialty(doctorDTO.medicalSpecialty());
+        doctor.setMedicalSpecialty(doctor.getMedicalSpecialty());
         doctor.setPhoneNumber(doctorDTO.phoneNumber());
         return doctor;
     }
@@ -35,6 +36,8 @@ public class DoctorMapper {
         if (doctorRequest == null) {
             return null;
         }
+
+
         return new DoctorDTO(
                 doctorRequest.id(),
                 doctorRequest.firstName(),

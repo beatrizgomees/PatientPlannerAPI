@@ -12,13 +12,10 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.junit.jupiter.api.extension.ExtendWith;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 
@@ -71,7 +68,7 @@ public class MedicalSpecialtyTest {
 
         @Test
         @DisplayName("Should throw exception when error occurs")
-        void shouldThrowExceptionWhenErrorOccurs() throws IllegalAccessException {
+        void shouldThrowExceptionWhenErrorOccurs() {
 
             var input = new MedicalSpecialtyDTO(
                     UUID.randomUUID(),
@@ -88,7 +85,7 @@ public class MedicalSpecialtyTest {
 
         @Test
         @DisplayName("Should throw exception when create medical specialty with email null")
-        void shouldThrowExceptionWhenCreateMedicalSpecialtyWithEmailNull() throws IllegalAccessException {
+        void shouldThrowExceptionWhenCreateMedicalSpecialtyWithEmailNull(){
             var input = new MedicalSpecialtyDTO(
                     UUID.randomUUID(),
                     "Reumatologia",
