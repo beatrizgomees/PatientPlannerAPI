@@ -4,6 +4,7 @@ package com.github.beatrizgomees.api.service;
 import com.github.beatrizgomees.api.rheumaPlanner.domain.doctor.DoctorDTO;
 import com.github.beatrizgomees.api.rheumaPlanner.domain.medicalSpecialty.MedicalSpecialtyDTO;
 import com.github.beatrizgomees.api.rheumaPlanner.infrastructure.data.DataManager;
+import com.github.beatrizgomees.api.rheumaPlanner.infrastructure.exceptions.FindByIdException;
 import com.github.beatrizgomees.api.rheumaPlanner.service.doctorService.DoctorServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -11,11 +12,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Supplier;
+
 import static io.smallrye.common.constraint.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -25,8 +29,11 @@ public class DoctorServiceTest {
 
     @Mock
     DataManager dataManager;
+
     @Mock
     private DoctorServiceImpl doctorService;
+
+    private DoctorServiceImpl doctorServiceWithDataManagerMock = new DoctorServiceImpl(dataManager);
 
     @Captor
     private ArgumentCaptor<DoctorDTO> doctorDTOArgumentCaptor;
@@ -233,7 +240,7 @@ public class DoctorServiceTest {
 
         @Test
         @DisplayName("Should delete doctor with sucess when medical specialty exists")
-        public void deleteDoctorById(){
+        public void deleteDoctorById()  {
 
             doNothing().when(doctorService).delete(UUIDArgumentCaptor.capture());
 
@@ -245,6 +252,9 @@ public class DoctorServiceTest {
             assertEquals(doctorId, idList.get(0));
 
         }
+
+
+
     }
 
 

@@ -23,6 +23,10 @@ public class DoctorServiceImpl implements CrudService<DoctorDTO, Document> {
     public DoctorServiceImpl() {
     }
 
+    public DoctorServiceImpl(DataManager dataManager) {
+        this.dataManager = dataManager;
+    }
+
     @Override
     public DoctorDTO create(DoctorDTO doctorDTO){
         if (existsMedicalSpecialtyByName(doctorDTO)) {
@@ -68,29 +72,27 @@ public class DoctorServiceImpl implements CrudService<DoctorDTO, Document> {
     }
 
     @Override
-    public void delete(UUID id) {
-        try {
-            var idExist = existById(id);
-            if(idExist.isPresent()) {
-                dataManager.delete(id, getCollectionName());
-            }
-        }catch (NotFoundException e) {
-            e.printStackTrace();
+    public void delete(UUID id)  {
+        var idExist = existById(id);
+        if (idExist.isEmpty()) {
+            throw new RuntimeException("Doctor is not found");
+        } else {
+            dataManager.delete(id, getCollectionName());
         }
     }
 
     @Override
-    public Optional<Document> update(UUID id, Document updateDocument) throws FindByIdException {
+    public Optional<Document> update(UUID id, Document updateDocument) {
         Optional<Document> document = findById(id);
         try {
             if (document == null) {
-                throw new FindByIdException("Doctor not found");
+                throw new IllegalStateException("Doctor not found");
             }
             Document update = new Document("$set", updateDocument);
             dataManager.updateGenereal(id, update, "doctor");
 
-        } catch (FindByIdException e) {
-            throw new FindByIdException("Error finding doctor by ID", e);
+        } catch (IllegalStateException e){
+            throw new IllegalArgumentException("Error finding doctor by ID", e);
         }
         return document;
     }
@@ -100,7 +102,7 @@ public class DoctorServiceImpl implements CrudService<DoctorDTO, Document> {
     public  Optional<Boolean> existById(UUID id) {
         Document exist = dataManager.findByIdGeneral(id, getCollectionName());
         if (exist == null || exist.isEmpty()) {
-            throw new IllegalStateException();
+            throw new RuntimeException("Doctor is not found");
         }else{
             return Optional.of(true);
         }

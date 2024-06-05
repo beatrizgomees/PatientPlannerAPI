@@ -47,7 +47,7 @@ public class TodoListController {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response findNoteById(@PathParam("id") UUID id)  throws FindByIdException {
+    public Response findNoteById(@PathParam("id") UUID id)  {
         Optional<Document> todoListRequest = todoListService.findById(id);
         return Response.ok(todoListRequest).status(200).build();
     }
@@ -65,7 +65,7 @@ public class TodoListController {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateNote(@PathParam("id") String id, TodoListRequest todoListRequest) throws FindByIdException {
+    public Response updateNote(@PathParam("id") String id, TodoListRequest todoListRequest) {
         TodoListMapper mapper = new TodoListMapper();
         TodoListDTO todoListDTO = mapper.convertRequestToDTO(todoListRequest);
         Document document = mapper.convertDtoToDocument(todoListDTO);

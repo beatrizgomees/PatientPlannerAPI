@@ -17,7 +17,7 @@ public interface CrudService<T, U> {
 
     void delete(UUID id);
 
-    Optional<U> update(UUID id, U updateDocument) throws FindByIdException;
+    Optional<U> update(UUID id, U updateDocument);
 
 
     Optional<Boolean> existById(UUID id);

@@ -82,7 +82,7 @@ public class MedicalSpecialtyServiceImpl implements CrudService<MedicalSpecialty
     }
 
     @Override
-    public Optional<Document> update(UUID id, Document updateDocument) throws FindByIdException {
+    public Optional<Document> update(UUID id, Document updateDocument) {
         Optional<Document> document = findById(id);
         try {
             if (document == null) {
@@ -92,7 +92,7 @@ public class MedicalSpecialtyServiceImpl implements CrudService<MedicalSpecialty
             dataManager.updateGenereal(id, update, getCollectionName());
 
         } catch (FindByIdException e) {
-            throw new FindByIdException("Error finding medical specialty by ID", e);
+            throw new IllegalStateException("Error finding medical specialty by ID", e);
         }
         return document;
     }

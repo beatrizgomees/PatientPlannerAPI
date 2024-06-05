@@ -1,6 +1,8 @@
 package com.github.beatrizgomees.api.rheumaPlanner.application.note;
 
 
+import com.github.beatrizgomees.api.rheumaPlanner.domain.doctor.DoctorDTO;
+import com.github.beatrizgomees.api.rheumaPlanner.domain.doctor.DoctorMapper;
 import com.github.beatrizgomees.api.rheumaPlanner.domain.note.NoteDTO;
 import com.github.beatrizgomees.api.rheumaPlanner.domain.note.NoteMapper;
 import com.github.beatrizgomees.api.rheumaPlanner.service.noteService.NoteServiceImpl;
@@ -32,7 +34,8 @@ public class NoteController {
     @Operation(summary = "register new notes in the database")
     @Produces(MediaType.APPLICATION_JSON)
     public Response createNote(NoteRequest noteRequest){
-        NoteDTO noteDTO = noteServiceImpl.convertRequestToDTO(noteRequest);
+        NoteMapper mapper = new NoteMapper();
+        NoteDTO noteDTO = mapper.convertRequestToDTO(noteRequest);
         noteServiceImpl.create(noteDTO);
         return Response.ok(noteRequest).status(201).build();
     }
@@ -50,7 +53,7 @@ public class NoteController {
     @Operation(summary = "Search for notes registered at the bank by ID")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response findNoteById(@PathParam("id") UUID id)  throws FindByIdException {
+    public Response findNoteById(@PathParam("id") UUID id) {
         Optional<Document> noteRequest =  noteServiceImpl.findById(id);
         return Response.ok(noteRequest).status(200).build();
 
@@ -72,7 +75,7 @@ public class NoteController {
     @Operation(summary = "updates notes already registered in the bank")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateNote(@PathParam("id") String id, NoteRequest noteRequest) throws FindByIdException {
+    public Response updateNote(@PathParam("id") String id, NoteRequest noteRequest) {
         NoteMapper mapper = new NoteMapper();
         NoteDTO noteDTO = mapper.convertRequestToDTO(noteRequest);
         Document document = mapper.convertDtoToDocument(noteDTO);

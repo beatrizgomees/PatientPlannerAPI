@@ -57,7 +57,7 @@ public class DoctorController {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response deleteOneNote(@PathParam("id") String id){
+    public Response deleteOneNote(@PathParam("id") String id) {
         doctorServiceImpl.delete(UUID.fromString(id));
         return Response.ok().status(200).build();
     }
