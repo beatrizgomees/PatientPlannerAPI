@@ -174,7 +174,7 @@ public class DoctorServiceTest {
         }
 
         @Test
-        @DisplayName("Should not get doctor by id with sucess when optional is empty")
+        @DisplayName("Should not get doctor by id when optional is empty")
         public void shouldGetDoctorByIdWhenOptionalIsEmpty(){
             var InputmedicalSpecialty = new MedicalSpecialtyDTO(
                     UUID.randomUUID(),

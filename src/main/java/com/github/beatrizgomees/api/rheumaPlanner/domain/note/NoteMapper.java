@@ -1,9 +1,5 @@
 package com.github.beatrizgomees.api.rheumaPlanner.domain.note;
 
-import com.github.beatrizgomees.api.rheumaPlanner.domain.medicine.Medicine;
-import com.github.beatrizgomees.api.rheumaPlanner.domain.medicine.MedicineDTO;
-import com.github.beatrizgomees.api.rheumaPlanner.domain.medicine.MedicineRequest;
-import com.github.beatrizgomees.api.rheumaPlanner.domain.medicine.MedicineResponse;
 import org.bson.Document;
 
 
@@ -11,12 +7,6 @@ public class NoteMapper {
 
     public Note convertDtoToEntity(NoteDTO noteDTO){
         Note note = new Note();
-        note.setTitle(noteDTO.title());
-        note.setDescription(noteDTO.description());
-        note.setCreatedAt(noteDTO.createdAt());
-        note.setDateConsult(noteDTO.dateConsult());
-        note.setDoctor(noteDTO.doctor());
-        note.setTodoList(noteDTO.todoLists());
         return note;
     }
 
